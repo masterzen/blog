@@ -167,8 +167,8 @@ sass:
 
 # Outputting
 permalink: "/:year/:month/:day/:title/"
-paginate: 5 # amount of posts to show
-paginate_path: /page-:num/
+paginate: 3 # amount of posts to show
+paginate_path: /blog/page/:num/
 timezone: # https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
 
 
@@ -194,10 +194,10 @@ whitelist:
 #  - <base_path/my-awesome-category/index.html ~> path: /
 category_archive:
   type: liquid
-  path: /categories/
+  path: /category/
 tag_archive:
   type: liquid
-  path: /tags/
+  path: /tag/
 # https://github.com/jekyll/jekyll-archives
 jekyll-archives:
   enabled:
@@ -208,9 +208,22 @@ jekyll-archives:
     category: archive-taxonomy
     tag: archive-taxonomy
   permalinks:
-    category: /categories/:name/
-    tag: /tags/:name/
+    category: /category/:name/
+    tag: /tag/:name/
     years: /blog/:year
+
+feed:
+  path: feed/index.xml
+  categories:
+    - puppet
+    - devops
+    - monitoring
+    - photography
+    - programming
+    - ssl
+    - sysadmin
+    - uncategorized
+    - java
 
 
 # HTML Compression
