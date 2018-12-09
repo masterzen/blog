@@ -1,0 +1,253 @@
+# Welcome to Jekyll!
+#
+# This config file is meant for settings that affect your whole blog, values
+# which you are expected to set up once and rarely edit after that. If you find
+# yourself editing this file very often, consider using Jekyll's data files
+# feature for the data you need to update frequently.
+#
+# For technical reasons, this file is *NOT* reloaded automatically when you use
+# 'bundle exec jekyll serve'. If you change this file, please restart the server process.
+
+# Site settings
+# These are used to personalize your new site. If you look in the HTML files,
+# you will see them accessed via {{ site.title }}, {{ site.email }}, and so on.
+# You can create any custom variable you would like, and they will be accessible
+# in the templates via {{ site.myvariable }}.
+url: http://www.masterzen.fr
+title: Masterzen's Blog
+subtitle: Journey in a software world…
+author: Masterzen
+simple_search: http://google.com/search
+description:
+
+baseurl: "" # the subpath of your site, e.g. /blog
+url: "" # the base hostname & protocol for your site, e.g. http://example.com
+twitter_username: _masterzen_
+github_username:  masterzen
+
+# Build settings
+markdown: kramdown
+theme: minimal-mistakes-jekyll
+plugins:
+  - jekyll-feed
+  - jekyll-paginate
+  - jekyll-sitemap
+  - jekyll-gist
+  - jemoji
+  - jekyll-include-cache
+  - jekyll-archives
+
+# Exclude from processing.
+# The following items will not be processed, by default. Create a custom list
+# to override the default setting.
+# exclude:
+#   - Gemfile
+#   - Gemfile.lock
+#   - node_modules
+#   - vendor/bundle/
+#   - vendor/cache/
+#   - vendor/gems/
+#   - vendor/ruby/
+
+minimal_mistakes_skin    : "dirt" # "air", "aqua", "contrast", "dark", "dirt", "neon", "mint", "plum", "sunrise"
+
+atom_feed:
+  path: "http://feeds.feedburner.com/masterzen"
+
+comments:
+  provider               : "disqus"
+  disqus:
+    shortname            : "masterzen"
+
+twitter:
+  username               : _masterzen_
+
+og_image                 : https://www.gravatar.com/avatar/847d6074897a4fcf9ce929ca71ea7914
+social:
+  type                   : Person
+  name                   : masterzen
+  links:
+    - https://twitter.com/_masterzen_
+
+
+
+author:
+  name             : "Masterzen"
+  avatar           : "/images/avatar-large.jpg"
+  bio              : "You'll find here my current and past thoughts about my work and hobbies, including but not limited to system administration, programming, photography ,boardgames or mechanical keyboards."
+  location         : "Somewhere"
+  email            :
+  links:
+    - label: "Email"
+      icon: "fas fa-fw fa-envelope-square"
+      # url: mailto:your.name@email.com
+    - label: "Website"
+      icon: "fas fa-fw fa-link"
+      url: "http://www.masterzen.fr"
+    - label: "Twitter"
+      icon: "fab fa-fw fa-twitter-square"
+      url: "https://twitter.com/_masterzen_"
+    - label: "GitHub"
+      icon: "fab fa-fw fa-github"
+      url: "https://github.com/masterzen"
+
+# Site Footer
+footer:
+  links:
+    - label: "Twitter"
+      icon: "fab fa-fw fa-twitter-square"
+      url: "https://twitter.com/_masterzen_"
+    - label: "GitHub"
+      icon: "fab fa-fw fa-github"
+      url: "https://github.com/masterzen"
+
+
+# Reading Files
+include:
+  - .htaccess
+  - _pages
+exclude:
+  - "*.sublime-project"
+  - "*.sublime-workspace"
+  - vendor
+  - .asset-cache
+  - .bundle
+  - .jekyll-assets-cache
+  - .sass-cache
+  - assets/js/plugins
+  - assets/js/_main.js
+  - assets/js/vendor
+  - Capfile
+  - CHANGELOG
+  - config
+  - Gemfile
+  - Gruntfile.js
+  - gulpfile.js
+  - LICENSE
+  - log
+  - node_modules
+  - package.json
+  - Rakefile
+  - README
+  - tmp
+  - /docs # ignore Minimal Mistakes /docs
+  - /test # ignore Minimal Mistakes /test
+keep_files:
+  - .git
+  - .svn
+encoding: "utf-8"
+markdown_ext: "markdown,mkdown,mkdn,mkd,md"
+
+
+# Conversion
+markdown: kramdown
+highlighter: rouge
+lsi: false
+excerpt_separator: "\n\n"
+incremental: false
+
+
+# Markdown Processing
+kramdown:
+  input: GFM
+  hard_wrap: false
+  auto_ids: true
+  footnote_nr: 1
+  entity_output: as_char
+  toc_levels: 1..6
+  smart_quotes: lsquo,rsquo,ldquo,rdquo
+  enable_coderay: false
+
+
+# Sass/SCSS
+sass:
+  sass_dir: _sass
+  style: compressed # http://sass-lang.com/documentation/file.SASS_REFERENCE.html#output_style
+
+
+# Outputting
+permalink: "/:year/:month/:day/:title/"
+paginate: 5 # amount of posts to show
+paginate_path: /page-:num/
+timezone: # https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
+
+
+# mimic GitHub Pages with --safe
+whitelist:
+  - jekyll-paginate
+  - jekyll-sitemap
+  - jekyll-gist
+  - jekyll-feed
+  - jemoji
+  - jekyll-include-cache
+
+
+# Archives
+#  Type
+#  - GitHub Pages compatible archive pages built with Liquid ~> type: liquid (default)
+#  - Jekyll Archives plugin archive pages ~> type: jekyll-archives
+#  Path (examples)
+#  - Archive page should exist at path when using Liquid method or you can
+#    expect broken links (especially with breadcrumbs enabled)
+#  - <base_path>/tags/my-awesome-tag/index.html ~> path: /tags/
+#  - <base_path/categories/my-awesome-category/index.html ~> path: /categories/
+#  - <base_path/my-awesome-category/index.html ~> path: /
+category_archive:
+  type: liquid
+  path: /categories/
+tag_archive:
+  type: liquid
+  path: /tags/
+# https://github.com/jekyll/jekyll-archives
+jekyll-archives:
+  enabled:
+    - categories
+    - tags
+    - years
+  layouts:
+    category: archive-taxonomy
+    tag: archive-taxonomy
+  permalinks:
+    category: /categories/:name/
+    tag: /tags/:name/
+    years: /blog/:year
+
+
+# HTML Compression
+# - http://jch.penibelst.de/
+compress_html:
+  clippings: all
+  ignore:
+    envs: development
+
+# Defaults
+defaults:
+  # _posts
+  - scope:
+      path: ""
+      type: posts
+    values:
+      layout: single
+      author_profile: true
+      read_time: true
+      comments: true
+      share: true
+      related: false
+  # _pages
+  - scope:
+      path: ""
+      type: pages
+    values:
+      layout: single
+      author_profile: true
+
+analytics:
+  provider: "google-gtag"
+  google:
+    tracking_id: "UA-6968171-1"
+    anonymize_ip: true # default
+
+search                   : true
+search_full_content      : true
+search_provider          : lunr
+

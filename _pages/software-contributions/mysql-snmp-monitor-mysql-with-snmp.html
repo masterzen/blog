@@ -1,0 +1,97 @@
+---
+layout: single
+title: "mysql-snmp - monitor MySQL with SNMP"
+date: 2009-04-13 19:02:49
+permalink: "/software-contributions/mysql-snmp-monitor-mysql-with-snmp.html"
+comments: false
+sharing: true
+footer: true
+---
+<h2>What's that?</h2>
+<strong>mysql-snmp</strong> is a <a href="http://www.net-snmp.org/">Net-SNMP</a> Perl subagent that connects to a <a
+  href="http://www.mysql.com/">MySQL server</a> and reports its statistics through <a href="http://en.wikipedia.org/wiki/Simple_Network_Management_Protocol">SNMP</a>.
+Additionally this project contains material to graph MySQL variables/counters in <a href="http://www.opennms.org/index.php/Main_Page">OpenNMS</a>.
+
+The graphs are based on the excellent <a href="http://code.google.com/p/mysql-cacti-templates/">MySQL Cacti Templates</a>
+by <a href="http://www.xaprb.com/blog/">Baron Schwartz</a>.
+<h2>What's this stuff is doing?</h2>
+This is a small perl daemon that:
+<ul>
+  <li><em> connects locally to Net-SNMP snmpd to report statistics</em></li>
+  <li><em>connects remotely or locally to a MySQL server to fetch statistics</em></li>
+</ul>
+The daemon ships with a MIB file I crafted, and OpenNMS configuration snippets to start monitor your MySQL servers
+without hassles.
+
+Here are two <em>OpenNMS</em> graphs:
+
+<a href="/images/uploads/2009/04/innodbtransaction.png"><img class="aligncenter size-medium wp-image-34" title="innodbtransaction"
+    src="/images/uploads/2009/04/innodbtransaction-300x145.png" alt="InnoDB transactions" width="335" height="161" /></a>
+
+<a href="/images/uploads/2009/04/bufferpool.png"><img class="aligncenter size-medium wp-image-33" title="bufferpool"
+    src="/images/uploads/2009/04/bufferpool-300x145.png" alt="InnoDB Buffer Pool" width="332" height="160" /></a>
+<h2>You sold me, where do I get it?</h2>
+This software is only available in my <a href="http://github.com/masterzen/mysql-snmp/">MySQL-SNMP github repository</a>.
+<h3>To install the software on a server:</h3>
+<h4>1. clone the repository:</h4>
+<pre>
+$ git clone git://github.com/masterzen/mysql-snmp.git
+</pre>
+<h4>2. install</h4>
+If you run a debian server, build the debian package (the easiest way):
+<pre>
+$ cd mysql-snmp
+$ dpkg-buildpackage -rfakeroot -uc -b
+</pre>
+If you don't, modify the Makefile and install manually
+<pre>
+$ cd mysql-snmp
+$ sudo make install
+</pre>
+You'll have to craft your own startup init.d script, or grab the one I did for the debian package (have a look into the
+debian/ sub-directory).
+<h3>3. Configure</h3>
+First configure the local net-snmp by allowing AgentX:
+
+add to <em>/etc/snmp/snmpd.conf</em>
+
+master agentx
+
+and restart snmpd.
+
+Configuration of the mysql-agent.pl daemon is done with command line options. You'll have to tell it how to connect to
+your MySQL Server with the -u, -p and -h options.
+
+Then start the daemon, monitor your /var/log/syslog file to see if it works
+
+Then try it:
+<pre>
+$ snmpwalk -m MYSQL-SERVER-MIB -v 2c -c public localhost enterprises.20267
+MYSQL-SERVER-MIB::myKeyReadRequests.0 = Counter32: 514350
+MYSQL-SERVER-MIB::myKeyReads.0 = Counter32: 1379
+MYSQL-SERVER-MIB::myKeyWriteRequests.0 = Counter32: 75717
+MYSQL-SERVER-MIB::myKeyWrites.0 = Counter32: 300
+MYSQL-SERVER-MIB::myHistoryList.0 = Gauge32: 147
+MYSQL-SERVER-MIB::myInnodbTransactions.0 = Counter64: 4188320597
+MYSQL-SERVER-MIB::myReadViews.0 = Gauge32: 2
+MYSQL-SERVER-MIB::myCurrentTransactions.0 = Gauge32: 9
+MYSQL-SERVER-MIB::myLockedTransactions.0 = Gauge32: 0
+MYSQL-SERVER-MIB::myActiveTransactions.0 = Gauge32: 2
+</pre>
+
+If you see an ouput as the one above, then it worked fine.
+<h3>4. OpenNMS</h3>
+To start monitoring your MySQL servers with OpenNMS, you have to:
+<ul>
+  <li>augment datacollection-config.xml with the mysql-server mib information</li>
+  <li>declare the various graphs</li>
+</ul>
+Have a look to the opennms/ directory in the source archive, then paste the &lt;group&gt; content of
+mysql.datacollection-config.xml to the datacollection-config.xml file.
+
+Then add the mysql group to the hostdef part you're using.
+
+Then copy the various reports from mysql.snmp-graph.properties to your OpenNMS snmp-graph.properties and then add the
+report list to the global report list of the same file.
+
+Then restart your computer.

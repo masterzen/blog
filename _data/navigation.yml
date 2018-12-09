@@ -1,0 +1,12 @@
+# main links
+main:
+  - title: "Blog"
+    url: /
+  - title: "About"
+    url: /about/
+  - title: "Bio"
+    url: /bio/
+  - title: "Software Contributions"
+    url: /software-contributions/
+  - title: "Archive"
+    url: /archive/
