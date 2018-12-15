@@ -3,7 +3,7 @@
 title: "Ticket to Devopsdays Roma?"
 date: 2012-07-19 20:18:12
 comments: true
-categories: 
+category: 
  - devops
 tags: 
  - devops

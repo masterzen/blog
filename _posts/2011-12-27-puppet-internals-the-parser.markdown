@@ -3,7 +3,7 @@
 title: "Puppet Internals: the parser"
 date: 2011-12-27 16:46:51
 comments: true
-categories:
+category:
 - Puppet
 tags:
 - puppet

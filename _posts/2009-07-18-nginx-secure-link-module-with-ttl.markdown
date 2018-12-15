@@ -5,7 +5,7 @@ date: 2009-07-18 18:57:22 +02:00
 comments: true
 wordpress_id: 63
 wordpress_url: http://www.masterzen.fr/?p=63
-categories: 
+category: 
 - Programming
 - PHP
 - System Administration

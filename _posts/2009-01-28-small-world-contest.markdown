@@ -5,7 +5,7 @@ date: 2009-01-28 11:48:48 +01:00
 comments: true
 wordpress_id: 15
 wordpress_url: http://www.masterzen.fr/?p=15
-categories: 
+category: 
 - Boardgames
 tags: 
 - smallworld

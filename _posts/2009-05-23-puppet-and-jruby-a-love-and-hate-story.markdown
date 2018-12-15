@@ -5,7 +5,7 @@ date: 2009-05-23 18:15:38 +02:00
 comments: true
 wordpress_id: 46
 wordpress_url: http://www.masterzen.fr/?p=46
-categories: 
+category: 
 - Programming
 - Puppet
 - System Administration

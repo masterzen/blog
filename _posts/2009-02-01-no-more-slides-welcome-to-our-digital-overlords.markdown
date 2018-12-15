@@ -5,7 +5,7 @@ date: 2009-01-28 11:48:48 +01:00
 comments: true
 wordpress_id: 17
 wordpress_url: http://www.masterzen.fr/?p=17
-categories: 
+category: 
 - Photography
 tags: 
 - photo

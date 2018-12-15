@@ -4,7 +4,7 @@ date: 2009-01-12 22:36:13 +01:00
 comments: true
 wordpress_id: 7
 wordpress_url: http://www.masterzen.fr/?p=7
-categories: 
+category: 
 - MySQL
 - System Administration
 - Monitoring

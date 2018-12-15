@@ -2,7 +2,7 @@
 title: Net-Snmp doesn't detect interface speed on Linux
 wordpress_id: 8
 wordpress_url: http://www.masterzen.fr/?p=8
-categories: 
+category: 
 - System Administration
 - snmp
 tags: 

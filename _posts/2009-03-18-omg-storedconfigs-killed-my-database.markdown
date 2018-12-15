@@ -5,7 +5,7 @@ date: 2009-03-18 23:42:21 +01:00
 comments: true
 wordpress_id: 22
 wordpress_url: http://www.masterzen.fr/?p=22
-categories: 
+category: 
 - MySQL
 - System Administration
 - Puppet

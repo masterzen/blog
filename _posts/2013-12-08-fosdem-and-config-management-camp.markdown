@@ -3,7 +3,7 @@
 title: "FOSDEM and Config Management Camp 2014"
 date: 2013-12-08 10:06
 comments: true
-categories: 
+category: 
  - devops
 tags: 
  - devops

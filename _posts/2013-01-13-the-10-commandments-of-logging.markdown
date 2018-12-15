@@ -3,7 +3,7 @@
 title: "The 10 commandments of logging"
 date: 2013-01-13 15:55:26
 comments: true
-categories: 
+category: 
  - devops
 tags: 
  - devops

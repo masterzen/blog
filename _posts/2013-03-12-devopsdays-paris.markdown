@@ -3,7 +3,7 @@
 title: "Devopsdays Paris For Real!"
 date: 2013-03-12 19:43
 comments: true
-categories: 
+category: 
   - devops
 tags: 
   - devops

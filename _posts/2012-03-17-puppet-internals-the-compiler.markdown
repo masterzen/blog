@@ -3,7 +3,7 @@
 title: "Puppet Internals: the compiler"
 date: 2012-03-17 19:34:54
 comments: true
-categories:
+category:
 - puppet
 tags:
 - puppet

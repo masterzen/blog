@@ -5,7 +5,7 @@ date: 2009-10-15 06:52:08 +02:00
 comments: true
 wordpress_id: 116
 wordpress_url: http://www.masterzen.fr/?p=116
-categories: 
+category: 
 - MySQL
 - War stories
 - System Administration

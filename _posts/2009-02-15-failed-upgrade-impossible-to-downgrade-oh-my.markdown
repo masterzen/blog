@@ -5,7 +5,7 @@ date: 2009-02-15 19:27:45 +01:00
 comments: true
 wordpress_id: 19
 wordpress_url: http://www.masterzen.fr/?p=19
-categories: 
+category: 
 - System Administration
 - War stories
 tags: 

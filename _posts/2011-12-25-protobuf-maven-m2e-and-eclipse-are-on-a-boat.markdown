@@ -3,7 +3,7 @@
 title: "Protobuf, Maven, M2E and Eclipse are on a boat"
 date: 2011-12-25 19:30:45
 comments: true
-categories:
+category:
 - Maven
 - m2e
 - Protobuf

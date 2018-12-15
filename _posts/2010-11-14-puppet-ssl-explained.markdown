@@ -5,7 +5,7 @@ date: 2010-11-14 17:57:14 +01:00
 comments: true
 wordpress_id: 221
 wordpress_url: http://www.masterzen.fr/?p=221
-categories: 
+category: 
 - Puppet
 - crypto
 - ssl

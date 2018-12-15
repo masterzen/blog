@@ -5,7 +5,7 @@ date: 2009-08-08 11:13:43 +02:00
 comments: true
 wordpress_id: 83
 wordpress_url: http://www.masterzen.fr/?p=83
-categories: 
+category: 
 - Puppet
 tags: 
 - puppet

@@ -5,7 +5,7 @@ date: 2009-02-21 17:18:17 +01:00
 comments: true
 wordpress_id: 20
 wordpress_url: http://www.masterzen.fr/?p=20
-categories: 
+category: 
 - System Administration
 - Monitoring
 - Puppet

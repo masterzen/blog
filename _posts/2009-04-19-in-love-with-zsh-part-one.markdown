@@ -5,7 +5,7 @@ date: 2009-04-19 20:03:55 +02:00
 comments: true
 wordpress_id: 26
 wordpress_url: http://www.masterzen.fr/?p=26
-categories:
+category:
 - System Administration
 - zsh
 tags:

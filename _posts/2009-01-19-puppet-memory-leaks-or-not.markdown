@@ -5,7 +5,7 @@ date: 2009-01-19 23:03:17 +01:00
 comments: true
 wordpress_id: 14
 wordpress_url: http://www.masterzen.fr/?p=14
-categories: 
+category: 
 - Puppet
 - System Administration
 - Ruby

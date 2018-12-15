@@ -5,7 +5,7 @@ date: 2010-01-28 22:43:33 +01:00
 comments: true
 wordpress_id: 168
 wordpress_url: http://www.masterzen.fr/?p=168
-categories: 
+category: 
 - Programming
 - Nginx
 - Puppet

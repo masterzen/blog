@@ -5,7 +5,7 @@ date: 2009-11-22 12:24:50 +01:00
 comments: true
 wordpress_id: 138
 wordpress_url: http://www.masterzen.fr/?p=138
-categories: 
+category: 
 - Programming
 - System Administration
 - Nginx

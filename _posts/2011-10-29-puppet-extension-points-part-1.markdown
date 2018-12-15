@@ -5,7 +5,7 @@ date: 2011-10-29 12:17:23 +02:00
 wordpress_id: 237
 wordpress_url: http://www.masterzen.fr/?p=237
 comments: true
-categories: 
+category: 
 - Ruby
 - System Administration
 - Puppet

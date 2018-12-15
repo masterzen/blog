@@ -5,7 +5,7 @@ date: 2010-01-10 18:14:06 +01:00
 comments: true
 wordpress_id: 149
 wordpress_url: http://www.masterzen.fr/?p=149
-categories:
+category:
 - Programming
 - snmp
 - Monitoring

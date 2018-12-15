@@ -5,7 +5,7 @@ date: 2009-05-24 22:55:54 +02:00
 comments: true
 wordpress_id: 52
 wordpress_url: http://www.masterzen.fr/?p=52
-categories: 
+category: 
 - Uncategorized
 - Puppet
 - System Administration

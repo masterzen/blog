@@ -5,7 +5,7 @@ date: 2009-10-05 02:42:52 +02:00
 comments: true
 wordpress_id: 105
 wordpress_url: http://www.masterzen.fr/?p=105
-categories: 
+category: 
 - Programming
 - Ruby
 - System Administration

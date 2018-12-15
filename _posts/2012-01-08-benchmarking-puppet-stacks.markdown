@@ -3,7 +3,7 @@
 title: Benchmarking Puppet Stacks
 date: 2012-01-08 19:23:45
 comments: true
-categories:
+category:
 - puppet
 tags:
 - puppet

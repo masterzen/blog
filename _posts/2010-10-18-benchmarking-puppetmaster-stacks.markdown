@@ -5,7 +5,7 @@ date: 2010-10-18 22:48:49 +02:00
 comments: true
 wordpress_id: 215
 wordpress_url: http://www.masterzen.fr/?p=215
-categories: 
+category: 
 - System Administration
 - Puppet
 tags: 

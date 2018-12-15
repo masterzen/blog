@@ -4,8 +4,7 @@ comments: true
 wordpress_id: 4
 date: 2009-01-11 14:24:03 +01:00
 wordpress_url: http://www.masterzen.fr/?p=4
-categories: 
-- Uncategorized
+category: [ "Uncategorized" ]
 tags: []
 
 ---

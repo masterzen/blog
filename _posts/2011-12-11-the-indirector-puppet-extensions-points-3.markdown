@@ -3,7 +3,7 @@
 title: The Indirector - Puppet Extension Points 3
 date: 2011-12-11 11:34
 comments: true
-categories:
+category:
 - Puppet
 - Sysadmin
 tags: 

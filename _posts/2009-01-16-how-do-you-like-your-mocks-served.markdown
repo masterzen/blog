@@ -5,7 +5,7 @@ date: 2009-01-16 22:28:14 +01:00
 comments: true
 wordpress_id: 9
 wordpress_url: http://www.masterzen.fr/?p=9
-categories: 
+category:
 - Programming
 - Java
 - Testing

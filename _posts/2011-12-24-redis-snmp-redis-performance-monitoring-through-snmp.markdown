@@ -3,7 +3,7 @@
 title: "redis-snmp: redis performance monitoring through SNMP"
 date: 2011-12-25 17:49:18
 comments: true
-categories:
+category:
 - Sysadmin
 - Monitoring
 tags:

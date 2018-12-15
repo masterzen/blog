@@ -5,7 +5,7 @@ date: 2010-07-31 16:48:27 +02:00
 comments: true
 wordpress_id: 204
 wordpress_url: http://www.masterzen.fr/?p=204
-categories: 
+category: 
 - System Administration
 - War stories
 - SQL

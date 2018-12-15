@@ -5,7 +5,7 @@ date: 2009-09-06 17:31:22 +02:00
 comments: true
 wordpress_id: 94
 wordpress_url: http://www.masterzen.fr/?p=94
-categories:
+category:
 - Photography
 tags:
 - gps
