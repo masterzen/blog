@@ -21,7 +21,7 @@ simple_search: http://google.com/search
 description:
 
 baseurl: "" # the subpath of your site, e.g. /blog
-url: "" # the base hostname & protocol for your site, e.g. http://example.com
+url: "http://www.masterzen.fr" # the base hostname & protocol for your site, e.g. http://example.com
 twitter_username: _masterzen_
 github_username:  masterzen
 
