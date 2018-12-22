@@ -9,8 +9,6 @@ tags:
 - "mechanical keyboards"
 ---
 
-## Building a handwired keyboard - Part 1
-
 For the last 7 months, I've been discovering a new hobby: DIY mechanical keyboards. I've been using mechanical keyboards for ages (I was mostly typing on a Code keyboards lately), but lately moved to type only on my macbook keyboard (hopefully this is an early 2015, so the keyboard ie bearable).
 
 So 7 months ago, I was browsing the Internet when I discovered a new world: there were passionate people that are building their keyboards and even [programming them with QMK](https://github.com/qmk/qmk_firmware).
@@ -23,7 +21,9 @@ This serie of posts is the story behind this keyboard:
 
 ![the end result](/images/uploads/2018/12/the-result.jpg)
 
-### What's a keyboard anyway
+Update: I've finished the [second part of the serie](/2018/12/handwired-keyboard-build-log-part-2/)
+
+## What's a keyboard anyway
 
 A keyboard if the combination of the following elements:
 
@@ -46,13 +46,13 @@ To prevent this we add diodes between the switch and the row it is connected to:
 
 In the same hypothetical scenario as before, the current will be prevented to flow back from `K00` to `K01` and from `Line0` by the `D01` diode. Thus when powering `Col0`, the controller will only see a tension on `Line0`. And when powering `Col1` it will see a tension from `Line0` and `Line1`, thus registering 3 key presses.
 
-### Handwiring
+## Handwiring
 
 Handwiring as its name implies is an electronic technique of building electronic circuits without using a PCB, and instead wiring all components one by one manually with small electric wires. It is often used to perform prototype of electronic boards.
 
 The aim of this build log is to show how to wire a fully working (but small) keyboard.
 
-### The BOM
+## The BOM
 
 We're going to build a [Planck](https://olkb.com/planck) like keyboard in MIT layout, that is a matrix of 4x12, with a 2u spacebar, accounting for 47 keys. I chose this keyboard and layout because it's one of the smaller keyboard (a 40%) and it is ortholinear (all switches are aligned) making it easy to wire.
 
@@ -75,7 +75,7 @@ Note that this plate has holes for a PCB mount stabilizer for the 2u space bar. 
 
 We'll also need the following tools:
 
-* a [wire stripper](https://www.irwin.com/tools/pliers-adjustable-wrenches/self-adjusting-wire-stripper). Being in Europe I got myself a nice Facom one.
+* a [wire stripper](https://www.irwin.com/tools/pliers-adjustable-wrenches/self-adjusting-wire-stripper). Being in Europe I got myself a nice Stanley one.
 * a [set of tweezers](http://a.co/d/g7Of53F)
 * a [precision wire cutter](http://a.co/d/gELRzNi)
 * a multimeter with continuity mode
@@ -91,7 +91,7 @@ You can get a Vise Grip or any other tool like this one. You might need to tune 
 
 In this part of the story, we'll only need the wire stripper, some colored wires, the plate, 47 switches, tweezers, a multimeter, the wire cutter, solder and the soldering station.
 
-### Placing the switches
+## Placing the switches
 
 The very first step of our handwiring work is to firmly clips the switches on the plate:
 
@@ -103,7 +103,7 @@ I put the switches facing north (the led hole is at the top) so that the higher 
 
 With a 2.5mm plate, the switches should clipse correctly on it. Make sure the plate is using MX switch holes without "top-opening" punches (straight square holes).
 
-### Preparing the diodes
+## Preparing the diodes
 
 We'll have to solder the diodes on the switch pin connected to a row. Since there's no circuit copper pads to put the solder on like on a PCB, the best way to solder something on a pin is to form a small wire loop and put solder on it. The solder will "flow" between the pin and the loop and stick firmly.
 
@@ -123,7 +123,7 @@ After this you can cut the extraneous diode leg just after the loop:
 
 ![all diodes](/images/uploads/2018/12/all-diodes-loop.jpg){: .align-center}
 
-### Soldering the diodes
+## Soldering the diodes
 
 The very next step is to place the diode loops on each of the switch row pins:
 
@@ -147,7 +147,7 @@ We'll then keep adding diodes and soldering them until we've covered all switche
 It is important to not cut the remaining leg yet. We'll use it to connect to the row wire as you'll find in the next step.
 {: .notice--warning}
 
-### Building the rows
+## Building the rows
 
 To build the rows, we'll take a long piece of wire (I used black wire). The first thing to do is to remove the insulator at the loose end on something like 5cm with the wire stripper.
 
@@ -183,7 +183,7 @@ At this stage, you can check with a multimeter that each switch is correctly con
 
 Once you've made sure everything works electrically, it is time to move to the columns wiring.
 
-### Wiring the columns
+## Wiring the columns
 
 For a better visual effect, I've decided to wire each column with a different wire color. Unfortunately I couldn't find 12 different wire colors, so I've used only 6 that I repeated twice. I arranged the colors in an approximation of a rainbow.
 
@@ -207,8 +207,8 @@ The result should look like this:
 
 You can then use the multimeter to check the colums are correctly wired, and that no rows is electrically connected to a column.
 
-### What's coming next
+## What's coming next
 
-In the next part, I'll explain how to connect the controller to the matrix and how to program the controller to become a working keyboard. We'll also put some keycaps.
+In the [handwired build log part 2](/2018/12/handwired-keyboard-build-log-part-2), I'll explain how to connect the controller to the matrix and how to program the controller to become a working keyboard. We'll also put some keycaps on.
 
 Another part will explain how I'm going to build a bottom plate for the keyboard.
