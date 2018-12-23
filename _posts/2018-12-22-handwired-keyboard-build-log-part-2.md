@@ -1,6 +1,8 @@
 ---
 layout: single
 title: Handwired Keyboard Build Log - Part 2
+header:
+  image: /images/uploads/2018/12/mda-big-bang.jpg
 category:
 - "mechanical keyboards"
 - DIY

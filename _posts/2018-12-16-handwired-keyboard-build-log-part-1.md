@@ -1,6 +1,8 @@
 ---
 layout: single
 title: Handwired Keyboard Build Log - Part 1
+header:
+  image: /images/uploads/2018/12/matrix-done.jpg
 category:
 - "mechanical keyboards"
 - DIY
