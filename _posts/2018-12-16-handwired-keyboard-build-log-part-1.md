@@ -9,6 +9,11 @@ tags:
 - "mechanical keyboards"
 ---
 
+Update 1: I've finished the [second part of the serie](/2018/12/22/handwired-keyboard-build-log-part-2/)
+
+Update 2: The plate I'm using has a height of 1.5mm, not 2.5mm as some astute readers have pointed out.
+
+
 For the last 7 months, I've been discovering a new hobby: DIY mechanical keyboards. I've been using mechanical keyboards for ages (I was mostly typing on a Code keyboards lately), but lately moved to type only on my macbook keyboard (hopefully this is an early 2015, so the keyboard ie bearable).
 
 So 7 months ago, I was browsing the Internet when I discovered a new world: there were passionate people that are building their keyboards and even [programming them with QMK](https://github.com/qmk/qmk_firmware).
@@ -20,8 +25,6 @@ Forward to a month ago, I discovered that some people were building their own ke
 This serie of posts is the story behind this keyboard:
 
 ![the end result](/images/uploads/2018/12/the-result.jpg)
-
-Update: I've finished the [second part of the serie](/2018/12/handwired-keyboard-build-log-part-2/)
 
 ## What's a keyboard anyway
 
@@ -59,7 +62,7 @@ We're going to build a [Planck](https://olkb.com/planck) like keyboard in MIT la
 So what will we need to build our keyboard:
 
 * 47 switches. I had a left-over of [Aliaz silent 70g](https://kbdfans.cn/products/pre-orderaliaz-silent-switch-tactile) switches
-* a planck plate (which I purchased pre-made by [Laserboost](https://www.laserboost.com/plates-planck)). You can get one either from them or [Lasergist](https://lasergist.com/) if you send them the CAD files. You can easily get the CAD files from the [KLE layout tool](http://www.keyboard-layout-editor.com/) and [swillkb](http://builder.swillkb.com/). I choose a 2.5mm metal plate to make sure it is sturdy enough to type on it.
+* a planck plate (which I purchased pre-made by [Laserboost](https://www.laserboost.com/plates-planck)). You can get one either from them or [Lasergist](https://lasergist.com/) if you send them the CAD files. You can easily get the CAD files from the [KLE layout tool](http://www.keyboard-layout-editor.com/) and [swillkb](http://builder.swillkb.com/). I choose a 1.5mm metal plate to make sure it is sturdy enough to type on it.
 * electric wire of 0.2mm2 (24 AWG) of different colors
 * 47 diodes 1N4148
 * a controller: [teensy 2.0](https://www.pjrc.com/store/teensy.html). It can be a [Pro Micro](https://www.sparkfun.com/products/12640) or even the newer [QMK Proton C](https://olkb.com/parts/qmk-proton-c).
@@ -209,6 +212,6 @@ You can then use the multimeter to check the colums are correctly wired, and tha
 
 ## What's coming next
 
-In the [handwired build log part 2](/2018/12/handwired-keyboard-build-log-part-2), I'll explain how to connect the controller to the matrix and how to program the controller to become a working keyboard. We'll also put some keycaps on.
+In the [handwired build log part 2](/2018/12/22/handwired-keyboard-build-log-part-2), I'll explain how to connect the controller to the matrix and how to program the controller to become a working keyboard. We'll also put some keycaps on.
 
 Another part will explain how I'm going to build a bottom plate for the keyboard.
