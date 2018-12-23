@@ -39,7 +39,7 @@ So in a very fast loop, the controller's firmware will power on one column of th
 
 But there's a problem: if one presses more than one key at a time, it is possible for the controller to register ghost keypresses. See the following schema:
 
-![Ghosting Matrix](/images/uploads/2018/12/ghosting-matrix.png){: .align-center style="width: 50%"}
+![Ghosting Matrix](/images/uploads/2018/12/fixed-ghosting-matrix.png){: .align-center style="width: 50%"}
 
 When the controller will power the `Col0`, and if `K00`, `K01` and `K11` are depressed simultaneously, the controller will read current on both `Line0` and `Line1`, because the current will flow from `Col0` to `K00` pin 1, then pin 2 because the switch is depressed, then to switch `K01`, then to switch `K11`, then to `Line1`. For the controller it is as if all the switches have been pressed, instead of the 3 that were indeed depressed.
 
