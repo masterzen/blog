@@ -13,18 +13,18 @@ tags:
 - "mechanical keyboards"
 ---
 
-I've been in the keyboard community (and game) for more than two years now and my [keyboard collection](https://masterzen.smugmug.com/Keyboards/) starts to fill up my shelves. It's only recently that, as an Engineer, I started to think about keyboards were really working. 
+I've been in the keyboard community for more than two years now and my [keyboard collection](https://masterzen.smugmug.com/Keyboards/) is starting to fill up my shelves. It's only recently that, as an engineer, I started to think about how keyboards were really working.
 
 Some times ago, I got my hands on a 90s mint-condition [Apple Extended Keyboard](https://en.wikipedia.org/wiki/Apple_Extended_Keyboard), some AEK keycaps and [Alps SKCM switches](https://deskthority.net/wiki/Alps_SKCL/SKCM_series). The idea I had, was to wait for a Group Buy to happen for an Alps based keyboard (like the [ADK64](https://geekhack.org/index.php?topic=99383.0)) and then build a new keyboard with parts coming from old keyboards.
 
-Alas, I missed all the nice Alps GB (ie the [Lunar](https://geekhack.org/index.php?topic=96112.0)). Still I wanted to build a modern keyboard with those parts. One of the reason is that I worked with such mechanical keyboards back in the 90s and I remember that their tactile feeling was among the best I experienced.
+Alas, I missed all the nice Alps GB (ie the [Lunar](https://geekhack.org/index.php?topic=96112.0)). Still I wanted to build a modern keyboard with those parts. One of the reasons is that I worked with such mechanical keyboards back in the 90s and I remember that their tactile feeling was among the best I've experienced.
 
 So, an idea started to grow in my mind. What if I designed my own Alps based keyboard ?
 This way, I would be able to have the layout I want, instead of being forced in a 60% layout I'm not really fond of.
 
 This series of articles will tell this adventure. My aim is to allow anyone to also start designing their own keyboards, piece by piece, but also understand how everything works.
 
-At the time of writing, I have validated the PCB rev0, almost finished designing the case and plate, but the keyboard itself is yet finished.
+At the time of writing, I have validated the PCB rev0, almost finished designing the case and plate, but the keyboard itself is yet not finished.
 
 In this episode, we'll focus on beginning the electronic schema (outside the matrix). The very next episode will focus on the matrix, assigning footprints, etc. Then we'll have at least one episode on the PCB design.
 
