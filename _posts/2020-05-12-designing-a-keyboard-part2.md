@@ -87,4 +87,70 @@ The matrix should look like this now:
 
 ![Matrix wiring 67 keys](/images/uploads/2020/05/matrix-all-wired.png){: .align-center style="width: 65%"}
 
-The rest of the work will be quite tedious.
+Now, I'm going to reference all the switches and diodes I just placed. Since I'm quite lazy, I'll use the automatic referencing. If you want to reference switches by columns and rows (ie first switch is K00, second one K01, but first of row1 is K10, etc), you'll have to perform that manually (or write a Kicad script, or edit the `.sch` file with a text editor).
+
+Use the _Tools_ -> _Annotate Schematics_ to open the annotation window:
+
+![Annotation of the matrix](/images/uploads/2020/05/matrix-annotation.png){: .align-center style="width: 50%"}
+
+Make sure to annotate only the current sheet, and to _Sort components by Y position_. Once done, the matrix diodes and switches will have a proper unique reference identifier. If you somehow failed, the same dialog can also erase all references (this is easy to make a mistake, like for instance applying references to the whole schematics, not only the current sheet).
+
+The next step is to label each switches with their key character or name (ie K1 will be ``~`, K2 `#1`, etc). This will be easier during PCB layout to visually see which key we're laying out. To do this, let's open the _Tools_ -> _Edit Symbol Fields_.
+
+This opens a new dialog that allows to group components by reference or value (or both) and to edit component values all at once:
+
+![Editing Symbol Fields](/images/uploads/2020/05/matrix-edit-fields.png){: .align-center style="width: 50%"}
+
+Open the `K1-K67` group, and start assigning the correct key names to the switches in order:
+
+![Editing Key Values](/images/uploads/2020/05/matrix-edit-key-names.png){: .align-center style="width: 50%"}
+
+Once done, the matrix itself shouldn't be different. The key names don't appear, because the `KEYSW` symbol doesn't show the value. Unfortunately it isn't possible to edit symbol with the _Symbol Editor_, make the value visible and reassign the symbol to all the `KEYSW`. If I want the key name to appear I will have to edit manually the 67 switches or edit the `matrix.sch` with a text editor. I chose to alter the `matrix.sch` file with `sed`. Make sure to save the schema, close it and `git commit` the file and project before doing this:
+
+```sh
+sed -i -r -e 's/^F 1 "([^ ]+)" H ([0-9]+) ([0-9]+) ([0-9]+)  0001 C CNN/F 1 "\1" H \2 \3 \4  0000 C CNN/' matrix.sch
+```
+
+Reopen the root schema, then the matrix and you should see something like this:
+
+![Showing key names](/images/uploads/2020/05/matrix-key-names.png){: .align-center style="width: 50%"}
+
+The matrix is now finished. Perfectionist could move the key values or diode references so that they don't collide.
+
+The next step is to finally prepare the main schema
+
+## Prepare the MCU schema
+
+Using the _Tools_ -> _Annotate Symbols_, I'm going to assign references to the main sheet (and only this one). Once done, to ease laying out the MCU on the PCB, I'm going to tentatively assign rows and columns to the Atmega32U4 pins.
+
+To do that, I need to tell you a few rules about laying out our board:
+
+* the `D+`/`D-` signal form a differential pair. They need to be traced as directly as possible.
+* there's only limited space available on the board between switches to put the MCU. Except behind the space bar where there's no switch at all.
+* the connections between the MCU and the matrix should cross each others as little as possible, thus the MCU should be oriented wisely so that left columns are assigned to pins to the left of the MCU and reverse.
+
+The physical layout of the MCU looks like this (it's called a pinout):
+
+![Showing key names](/images/uploads/2020/05/atmega-pinout.png){: .align-center style="width: 50%"}
+
+With this in mind, if I want to minimize the path for `D+`/`D-`, and considering that the MCU will be at the bottom part and the USB port at the top, I will have to put the `D+`/`D-` side up. This means that:
+
+* PF0, PF1, PF4, PF5, PF6, PF7 will be on the right
+* PD0, PD1, PD2, PD3, PD5 will be on the left
+* PD4, PD6, PD7 on the bottom left
+* PB5, PB6, PC6, PC7 on the bottom right
+
+Which means that I can assign `col0` to `col4` to left pads, `col5` to `col7` to the bottom left, `col8` to `col11` to the bottom right and finally `col11` to `col14` to the right pads. The rows can be connected on the `PBx` pins of the top.
+
+Of course this is an attempt that will serve as a guide during the PCB layout. There are great chances that I'll have to come back to the schema to reassign columns or rows to the MCU pins.
+
+Here's the schema with the rows and columns connected:
+
+![Wired Atmega32U4](/images/uploads/2020/05/atmega-pinout.png){: .align-center style="width: 50%"}
+
+## Check connectivity
+
+Before moving forward, I need to make sure everything is connected correctly. Kicad contains a tool called the _Electrical Rules Checker_ that can help debug the schema connectivity. It is available in the _Inspect_ menu.
+
+When running the ERC, there shouldn't be any errors except missing power.
+
