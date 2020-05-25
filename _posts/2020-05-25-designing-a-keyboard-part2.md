@@ -2,7 +2,7 @@
 layout: single
 title: Designing a keyboard from scratch - Part 2
 header:
-  image: /images/uploads/2020/05/header-part1.png
+  image: /images/uploads/2020/05/header-part2.jpg
 category:
 - "mechanical keyboards"
 - DIY
@@ -54,7 +54,7 @@ Next, repeat the same with the 4 cells to form a line of 8, then a line of 16 ce
 
 This should look like this:
 
-![Matrix one row](/images/uploads/2020/05/matrix-one-line.png){: .align-center style="width: 80%"}
+![Matrix one row](/images/uploads/2020/05/matrix-one-line.png){: .align-center style="width: 95%"}
 
 Let's add a label to the row (`Ctrl-H`):
 
@@ -62,7 +62,7 @@ Let's add a label to the row (`Ctrl-H`):
 
 Let's now do the other rows. I'm going to apply the same technique, just do a `shift` drag selection around the whole `row0` and move it downward so that the wires of the columns connect:
 
-![Matrix second row](/images/uploads/2020/05/matrix-row1.png){: .align-center style="width: 80%"}
+![Matrix second row](/images/uploads/2020/05/matrix-row1.png){: .align-center style="width: 95%"}
 
 And do the same for the next 3 rows, this will give this nice array of switches:
 
@@ -367,76 +367,76 @@ Notice that all components are now placed inside the switch footprints, thanks t
 
 ## Cutting edges
 
-Now that everything is approximately at the right place, we can design the PCB border. In order to do that, I'm going to draw the contour while being in the `Edge.Cuts` layer. This will instruct the manufacturer where the board should be separated from the other. This can be used to give specific forms to the PCB. In this case, I'm going to draw the border exactly on the key bounding boxes, including the USB connector. The `HRO-TYPE-C-31-M-12` connector has four through-hole pins that needs to be soldered which means the PCB must extend under it (which will help secure the connector and prevent it to become lose while connecting/disconnecting cables frequently).
+Now that everything is approximately at the right place, we can design the PCB border. In order to do that, I'm going to draw the contour while being in the `Edge.Cuts` layer. This will let the manufacturer know where the board should be cut. This can be used to give specific forms to the PCB. In this case, I'm going to draw the border exactly on the key bounding boxes, including the USB connector. The `HRO-TYPE-C-31-M-12` connector has four through-hole pins that needs to be soldered which means the PCB must extend under those (this will help secure the connector and prevent it to become lose while connecting/disconnecting cables frequently).
 
-Let's start at the top-right corner (anyone will work, though), select the `Edge.Cuts` layer and the _Arc_ tool. Switch to the switch _User Grid settings_ if you're not in it and click in the middle of the top right corner:
+Let's start at the top-right corner (any corner will work though), select the `Edge.Cuts` layer and the _Arc_ tool. Switch to the switch _User Grid settings_ if you're not in it and click in the middle of the top right corner:
 
-![Top Right Edge Cut](/images/uploads/2020/05/pcb-top-right-cut.png){: .align-center style="width: 50%"}
+![Top Right Edge Cut](/images/uploads/2020/05/pcb-top-right-cut.png){: .align-center style="width: 80%"}
 
-Select the arc that just has been drawn and _Copy_ it (`Ctrl-C`) by clicking on its control points. Then paste the copy (`Ctrl-V`) and move the copy to the bottom-right corner. Rotate it by pressing `r` until it is in the correct direction and place it in the corner:
+Select the arc that just has been drawn and _Copy_ it (`Ctrl-C`) by clicking on its control points. Then paste the copy (`Ctrl-V`) and move it to the bottom-right corner (or any other corner). Rotate it by pressing `r` until it has the correct orientation and place it in the corner:
 
-![Bottom left Edge Cut](/images/uploads/2020/05/pcb-bottom-left-cut.png){: .align-center style="width: 50%"}
+![Bottom left Edge Cut](/images/uploads/2020/05/pcb-bottom-left-cut.png){: .align-center style="width: 60%"}
 
-Repeat for the two left corners. Before doing the edge lines, I think it's easier to prepare the USB connector. Draw an _Arc_ on the left part of the connector and continue it with a line:
+Repeat for the two remaining corners. Before adding the edge lines, I believe it's easier to prepare the USB connector. Draw an _Arc_ on the left part of the connector and continue it with a line:
 
-![Left USB cut](/images/uploads/2020/05/pcb-usb-left-arc.png){: .align-center style="width: 50%"}
+![Left USB cut](/images/uploads/2020/05/pcb-usb-left-arc.png){: .align-center style="width: 70%"}
 
 Then the draw the horizontal and right vertical edge:
 
-![Right USB cut](/images/uploads/2020/05/pcb-usb-right-cut.png){: .align-center style="width: 50%"}
+![Right USB cut](/images/uploads/2020/05/pcb-usb-right-cut.png){: .align-center style="width: 70%"}
 
 And finally copy the left arc (make sure to click the the bottom left control point):
 
-![Copy Left USB cut](/images/uploads/2020/05/pcb-usb-copy-left-arc.png){: .align-center style="width: 50%"}
+![Copy Left USB cut](/images/uploads/2020/05/pcb-usb-copy-left-arc.png){: .align-center style="width: 70%"}
 
 Next, move the arc to the right part of the usb and rotate it (`r`):
 
-![Paste at right USB cut](/images/uploads/2020/05/pcb-usb-right-arc.png){: .align-center style="width: 50%"}
+![Paste at right USB cut](/images/uploads/2020/05/pcb-usb-right-arc.png){: .align-center style="width: 70%"}
 
 Then finish the border by drawing _Lines_ connecting all the rounded corners:
 
-![Paste at right USB cut](/images/uploads/2020/05/pcb-edge-cut-lines.png){: .align-center style="width: 50%"}
+![Paste at right USB cut](/images/uploads/2020/05/pcb-edge-cut-lines.png){: .align-center style="width: 70%"}
 
 Now, inspect visually the edge cuts to make sure everything is aligned and connected. To have a better view, I recommend to hide the `Dwgs.User` layer (where the switches bounding boxes are drawn). I also ran the _Design Rule Checker_  (from the _Tools_ menu) to spot any edge cut errors:
 
-![DRC Edge Cuts hole error](/images/uploads/2020/05/pcb-edge-drc-error.png){: .align-center style="width: 50%"}
+![DRC Edge Cuts hole error](/images/uploads/2020/05/pcb-edge-drc-error.png){: .align-center style="width: 70%"}
 
-In this case the line was extending into the arc to much (by one grid element). It was easy to fix but couldn't be found except with the DRC.
+In this case the line was extending into the arc too much (by one grid step). It was easy to fix but couldn't be found except with the DRC.
 
 ## The big picture
 
-If you followed the design so far, you should have the following schema:
+If you followed the design so far, you should have the following PCB:
 
 ![The big picture](/images/uploads/2020/05/pcb-the-big-picture.png){: .align-center}
 
 ## 3D Visualization
 
-There's a feature in the Kicad PCB editor to see the PCB in 3D. I don't have the tracks laid out yet, but all the components have been placed so there's something to see. Activate _View_ &rarr; _3D Viewer_ to see the board top. You can move the board (not the best virtual ball I've ever used) with the mouse to orient the see the bottom face. You'll discover that there's no 3D model for the USB-C connector. This is easy to add, first edit the USB-C connector, then click on the _Footprint Properties_ icon and finally click on the _3D Settings_ tab:
+There's a feature in the Kicad PCB editor to see the PCB in 3D. I don't have the tracks laid out yet, but all the components have been placed so there's something to see. Activate _View_ &rarr; _3D Viewer_ to see the board top. You can rotate the board (not the best virtual ball I've ever used) with the mouse and see the bottom face (which contains our components). You'll soon discover that there's no 3D model for the USB Type-C connector. Hopefully it's easy to add it. First edit the USB Type-C connector, then click on the _Footprint Properties_ icon and finally click on the _3D Settings_ tab:
 
-![No Type-C 3D Model](/images/uploads/2020/05/pcb-empty-type-c.png){: .align-center style="width: 50%"}
+![No Type-C 3D Model](/images/uploads/2020/05/pcb-empty-type-c.png){: .align-center style="width: 75%"}
 
-Kicad doesn't know where to load the USB-C connector 3D model, add it with the folder icon and chose the `HRO  TYPE-C-31-M-12.step` file:
+Kicad doesn't know where to load the USB Type-C connector 3D model, click on the folder icon to add it and chose the `Type-C.pretty/HRO  TYPE-C-31-M-12.step` file:
 
-![Load the Type C](/images/uploads/2020/05/pcb-usb-right-arc.png){: .align-center style="width: 50%"}
+![Load the Type C](/images/uploads/2020/05/pcb-load-type-c.png){: .align-center style="width: 75%"}
 
 This loads the 3D model but in a completely off orientation:
 
-![Bad orientation](/images/uploads/2020/05/pcb-usb-bad-orientation.png){: .align-center style="width: 50%"}
+![Bad orientation](/images/uploads/2020/05/pcb-usb-bad-orientation.png){: .align-center style="width: 70%"}
 
 Apply the following transformation so that the connector has the correct orientation:
 
-![Type-C Correct Orientation](/images/uploads/2020/05/pcb-3d-usb-orientation.png){: .align-center style="width: 50%"}
+![Type-C Correct Orientation](/images/uploads/2020/05/pcb-3d-usb-orientation.png){: .align-center style="width: 75%"}
 
-Save the footprint, then the board can be rendered with all the components:
+Save the footprint, and finally the board can be rendered with all the components:
 
-![AEK67 PCB 3D View](/images/uploads/2020/05/pcb-aek67-3d.jpg){: .align-center style="width: 50%"}
+![AEK67 PCB 3D View](/images/uploads/2020/05/pcb-aek67-3d.jpg){: .align-center style="width: 95%"}
 
 ## What's cooking next
 
-We're still far from having a working PCB. In the next episode will cover
+That's all for today. We're still far from having a working PCB, and in the next episode I'll cover:
 
 * routing the traces
-* power ground planes
+* power ground pour
 * adding drawings on the silkscreen
 * manufacturing the PCB
 
