@@ -85,7 +85,7 @@ The matrix should now look like this:
 
 ![Matrix wiring 67 keys](/images/uploads/2020/05/matrix-all-wired.png){: .align-center style="width: 95%"}
 
-Now, I'm going to reference all the switches and diodes I just placed. Since I'm quite lazy, I'll use the automatic referencing feature. If you want to reference switches by coordinates (ie first switch is K000, second one K001, but first of row1 is K100, etc), you'll have to perform that manually (or write a Kicad script, or edit the `.sch` file with a text editor). I will just use increasing numbers in line.
+Now, I'm going to reference all the switches and diodes I just placed. Since I'm quite lazy, I'll use the automatic referencing feature. If you want to reference switches by coordinates (ie first switch is K000, second one K001, but first of row1 is K100, etc), you'll have to perform that manually (or write a script to directly modify the `.sch` file, or edit it with a text editor). I will just use increasing numbers in line.
 
 Use the _Tools_ &rarr; _Annotate Schematics_ to open the annotation window:
 
