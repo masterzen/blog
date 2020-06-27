@@ -7,5 +7,5 @@ push:
 
 
 serve:
-	JEKYLL_ENV=production bundle exec jekyll s --incremental
+	JEKYLL_ENV=production bundle exec jekyll s --drafts --incremental
 

@@ -13,6 +13,19 @@ tags:
 - "mechanical keyboards"
 ---
 
+## Updates
+
+* The decoupling capacitor section has been corrected to add a missing capacitor. There are 5 VCC pins on the Atmega32U4 and I was missing one.
+
+## The article collection
+
+This collection now contains the following articles:
+
+1. [Part 1 (this one) - the electronic schema](/2020/05/03/designing-a-keyboard-part-1/)
+2. [Part 2 - matrix & first steps of PCB layout](/2020/05/25/designing-a-keyboard-part2/)
+
+## Preamble
+
 I've been in the keyboard community for more than two years now and my [keyboard collection](https://masterzen.smugmug.com/Keyboards/) is starting to fill up my shelves. It's only recently that, as an engineer, I started to think about how keyboards were really working.
 
 Some times ago, I got my hands on a 90s mint-condition [Apple Extended Keyboard](https://en.wikipedia.org/wiki/Apple_Extended_Keyboard), some AEK keycaps and [Alps SKCM switches](https://deskthority.net/wiki/Alps_SKCL/SKCM_series). The idea I had, was to wait for a Group Buy to happen for an Alps based keyboard (like the [ADK64](https://geekhack.org/index.php?topic=99383.0)) and then build a new keyboard with parts coming from old keyboards.
@@ -217,19 +230,19 @@ It is possible to move the reference or value label of a component by pressing `
 
 ### Power decoupling
 
-The Atmega32U4 data-sheet recommends every `+5V` pins of the MCU to have decoupling capacitors. The decoupling capacitors play an important role for an active IC. If the component starts to draw current while doing its work, the voltage of the power source might drop, which could be problematic for the component itself but also for all other components powered by the same source (this creates noise on the power line).
+The Atmega32U4 data-sheet recommends every `+5V` pins of the MCU to have decoupling capacitors. The decoupling capacitors play an important role for an active IC. If the component starts to draw current while doing its work, the voltage of the power source will drop, which could be problematic for the component itself but also for all other components powered by the same source (this creates noise on the power line).
 
 To prevent this, we add decoupling capacitors on each power pin of the IC. Those decoupling capacitors will act as local energy storage. When the IC begins to consume energy the capacitors will be able to fulfill it without too much adverse effect on the power source. When the component doesn't consume energy the decoupling capacitors refills gradually becoming ready for the next serve.
 
 The [AN2519 tech notes](http://ww1.microchip.com/downloads/en/Appnotes/AN2519-AVR-Microcontroller-Hardware-Design-Considerations-00002519B.pdf) indicates that every VCC pins of the MCU should be decoupled by a 100nF (or 0.1µF) capacitor.
 
-To be effective, the capacitor must be placed as close as possible from the MCU on the final PCB. Note that there are 4 VCC pins on the Atmega32U4 (2 `AVCC`, `UVCC` and `VCC`), so ideally we would need 4 100nF capacitor and one 10μF for `VBUS`. In practice, we can share the 10μF capacitor for both `VBUS` and `UVCC` and dispatch the 3 100nF to the other vcc pins.
+To be effective, the capacitor must be placed as close as possible from the MCU on the final PCB. Note that there are 4 VCC pins on the Atmega32U4 (2 `AVCC`, `UVCC` and 2 x `VCC`), so ideally we would need 5 100nF capacitor and one 10μF for `VBUS`. In practice, we can share the 10μF capacitor for both `VBUS` and `UVCC` and dispatch the 4 100nF to the other vcc pins.
 
 To prevent cluttering the electronic schema, as ai03 suggests, I've placed those decoupling capacitors altogether in the schema.
 
 Start by placing a capacitor, then use the `c` command to copy and move the next capacitor until you've placed all. Then wire them accordingly to this schema:
 
-![Decoupling Capacitors](/images/uploads/2020/05/decoupling-capacitors.png){: .align-center style="width: 40%"}
+![Decoupling Capacitors](/images/uploads/2020/05/decoupling-capacitors-updated.png){: .align-center style="width: 40%"}
 
 ### ISP header
 

@@ -13,6 +13,13 @@ tags:
 - "mechanical keyboards"
 ---
 
+## Updates
+
+* I fixed the passive components footprints to be 0805 instead of 1206, based on a previous design I made. Those are still easy to hand-solder, but leave more empty space around the MCU to route signals.
+* The MCU placement and matrix connection schema is now correct. I forgot that it will be under the PCB and thus everything is mirrored.
+
+## Preamble
+
 Welcome for the second episode of this series of post about designing a full fledged keyboard from scratch. The [first episode](/2020/05/03/designing-a-keyboard-part-1/) focused on the electronic schema of the keyboard controller. This episode will cover the following topics:
 
 * how to design the matrix electronic schema
@@ -138,13 +145,13 @@ With this in mind, if I want to minimize the length of the `D+`/`D-` paths, and 
 * PD4, PD6, PD7 on the bottom left
 * PB5, PB6, PC6, PC7 on the bottom right
 
-It is then possible to assign `col0` to `col4` to the left pads, `col5` to `col7` to the bottom left pads, `col8` to `col11` to the bottom right pads and finally `col11` to `col14` to the right pads. The rows can be connected on the `PBx` pins of the top.
+Since the MCU will be on the back of the PCB, when looking from the top, then it is possible to assign `col0` to `col4` to bottom right pads (which will be left as seen from the bottom), `col5` to `col6` to the right pads, `col8` to `col14` to the bottom left corner. The rows can be connected on the `PFx` pins on the right.
 
 Of course this is an attempt that will serve as a guide during the PCB layout. There are great chances that I'll have to come back to the schema to reassign columns or rows to the MCU pins as I see fit.
 
 Here's the schema with the rows and columns connected:
 
-![Wired Atmega32U4](/images/uploads/2020/05/atmega-wired.png){: .align-center style="width: 50%"}
+![Wired Atmega32U4](/images/uploads/2020/05/atmega-wired-updated.png){: .align-center style="width: 50%"}
 
 ## Check for errors
 
@@ -168,13 +175,13 @@ Up until now I've only talked about the electronic symbols. Serious things are s
 
 This project will only have SMD components (because they are much smaller). SMD components are soldered directly on the PCB. On the other hand I want to be able to solder them with my usual soldering iron and not a reflow oven or an hot-air gun. That means I have to choose SMD components that are big enough to be able to do that easily.
 
-For passive components like resistors, capacitors, etc, there are several normalized sizes. From bigger ones like `1206`, `0805`, `0603`, `0402`, or even `0201`. In fact this number represents the size of the component in inches (centi-inches even), so for instance 1206 means a length of 0.12 inch and a width of 0.6 inch (which makes them the large). It is relatively easy to hand-solder 1206 or 0805 components with a regular iron solder (I'll explain the techniques in a subsequent post), but not so much for the smaller ones. Soldering such components requires a magnifying glass, a pair of tweezers and soldering flux at the very least.
+For passive components like resistors, capacitors, etc, there are several normalized sizes. From bigger ones like `1206`, `0805`, `0603`, `0402`, or even `0201`. In fact this number represents the size of the component in inches (centi-inches even), so for instance 1206 means a length of 0.12 inch and a width of 0.6 inch (which makes them the large). It is relatively easy to hand-solder 1206 and 0805 components with a regular iron solder (I'll explain the techniques in a subsequent post), but not so much for the smaller ones. Soldering such components requires a magnifying glass, a pair of tweezers and soldering flux at the very least.
 
 Here's the exact size of those different components:
 
 <a class=".align-center" title="Zerodamage / CC BY (https://creativecommons.org/licenses/by/3.0)" href="https://commons.wikimedia.org/wiki/File:SMT_sizes,_based_on_original_by_Zureks.svg"><img width="256" alt="SMT sizes, based on original by Zureks" src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/34/SMT_sizes%2C_based_on_original_by_Zureks.svg/256px-SMT_sizes%2C_based_on_original_by_Zureks.svg.png"></a>
 
-For this PCB, I'm going to choose the 1206 size so that it's easier to solder the components. Other components have different packages of different size too. For instances, diodes exists in `SOD323`, `SOD123`, `MiniMelf` packages etc. `SOD323` packages are much easier to solder than `MiniMELF` packages, because MELF components are cylindrical (and they tend to roll or misalign easily).
+For this PCB, I'm going to choose the 0805 (and not 1206 as I originally wrote) size so that it's still easy to solder the components but allows routing traces around the MCU. Other components have different packages of different size too. For instances, diodes exists in `SOD323`, `SOD123`, `MiniMelf` packages etc. `SOD323` packages are much easier to solder than `MiniMELF` packages, because MELF components are cylindrical (and they tend to roll or misalign easily).
 
 Let's assign footprints to the components now. Go to the _Tools_ menu and choose _Assign footprints_:
 
@@ -184,9 +191,9 @@ This dialog shows on the left column all the component classes, on the middle ou
 
 The task is to assign a given footprint to the references. With this, we can assign footprints in bulk, but it is also possible to assign a footprint to a given component directly from the schema by editing it (shortcut `e`).
 
-As said earlier, let's assign a `1206` footprint to our capacitors. Select all `C` references at once, select the `Capacitor_SMD` class in the left column, and select the `Capacitor_SMD:C_1206_3216Metric_Pad1.42x1.75mm_HandSolder` footprint. I specifically chose the `HandSolder` variant, because the pads are a bit larger than a regular `1206` (in fact you can even place a 1206 component in one pad of such footprint).
+As said earlier, let's assign a `0805` footprint to our capacitors. Select all `C` references at once, select the `Capacitor_SMD` class in the left column, and select the `Capacitor_SMD:C_0805_2012Metric_Pad1.15x1.40mm_HandSolder` footprint. I specifically chose the `HandSolder` variant, because the pads are a bit larger than a regular `0805` (in fact you can almost place a 0805 component in one pad of such footprint).
 
-![Assign capacitors footprint](/images/uploads/2020/05/assign-capa.png){: .align-center style="width: 90%"}
+![Assign capacitors footprint](/images/uploads/2020/05/assign-capa-updated.png){: .align-center style="width: 90%"}
 
 Do the same for the other components, and assign (use the search function to find the specific parts):
 
@@ -197,7 +204,8 @@ Do the same for the other components, and assign (use the search function to fin
 | 500mA Fuse | `Fuse:Fuse_1206_3216Metric_Pad1.42x1.75mm_HandSolder` | |
 | ISP header | `random-keyboard-parts:Reset_Pretty-Mask` | |
 | `K??` switches | `Alps_Only:ALPS-1U` | we'll come back later to this |
-| Resistors | `Resistor_SMD:R_1206_3216Metric_Pad1.42x1.75mm_HandSolder` | |
+| Capacitors | `Capacitor_SMD:C_0805_2012Metric_Pad1.15x1.40mm_HandSolder` | |
+| Resistors | `Resistor_SMD:R_0805_2012Metric_Pad1.15x1.40mm_HandSolder` | |
 | Atmega32U4 | `Package_QFP:TQFP-44_10x10mm_P0.8mm` | it should already be assigned, but just in case |
 | Reset push button | `random-keyboard-parts:SKQG-1155865` | |
 | PRTR5V0U2X | `random-keyboard-parts:SOT143B` | |
@@ -333,7 +341,7 @@ Since the footprints hotpoint is exactly at the center, and thanks to the switch
 
 Next, we'll move the components that needs to be close to the USB connector there. It means both 5.1k resistors, the PTC fuse and the ESD protection device. Notice how I carefully placed those to minimize the number of nets crossing:
 
-![USB-C components](/images/uploads/2020/05/pcb-usb-connection.png){: .align-center style="width: 70%"}
+![USB-C components](/images/uploads/2020/05/pcb-usb-connection-updated.png){: .align-center style="width: 70%"}
 
 ### The MCU
 
@@ -343,25 +351,25 @@ Now, I need to take care of the MCU and the components that are connected to it.
 
 Around the MCU, there are so many nets that it might be hard to see what's connected to what. At any time it is possible to highlight a net by using the _Highlight net_ function (shortcut `\``). For instance to better see the nets around the crystal:
 
-![MCU net highlight](/images/uploads/2020/05/pcb-mcu-crystal-highlight.png){: .align-center style="width: 75%"}
+![MCU net highlight](/images/uploads/2020/05/pcb-mcu-crystal-highlight-updated.png){: .align-center style="width: 75%"}
 
 The crystal needs to be connected to the two 22pF capacitors and the two `XTAL1` and `XTAL2` pads on the MCU. The following arrangement allows to take advantage of the free space around the MCU while minimizing the number of crossing nets and leaving room for routing the matrix around:
 
-![MCU Crystal laid out](/images/uploads/2020/05/pcb-mcu-crystal.png){: .align-center style="width: 75%"}
+![MCU Crystal laid out](/images/uploads/2020/05/pcb-mcu-crystal-updated.png){: .align-center style="width: 75%"}
 
 The `D+`/`D-` differential pair (the USB data lines) requires two 22 ohms resistors to make sure the USB bus is terminated with the correct impedance. Those have to be placed as close as possible to the MCU. We can orient them in the direction of the USB-C connector:
 
-![USB data line impedance](/images/uploads/2020/05/pcb-mcu-usb-datalines.png){: .align-center style="width: 55%"}
+![USB data line impedance](/images/uploads/2020/05/pcb-mcu-usb-datalines-updated.png){: .align-center style="width: 55%"}
 
 The next step is to add a decoupling capacitor for each `VCC` pad of the MCU. We'll keep the 10uF capacitor close to `UVCC` and `VBUS` as I explained in the [first part](/2020/05/03/designing-a-keyboard-part-1/). The rest of the 0.1uF capacitors will be moved close to the other `VCC` pins. The idea again is to minimize the number of nets crossing while still leaving room for routing traces. We also do the same for the `RESET` pull-up resistor, the `UCAP` capacitor and the `HWB` resistor, and finally the reset push button:
 
-![MCU Capacitors](/images/uploads/2020/05/pcb-mcu-capacitors.png){: .align-center style="width: 85%"}
+![MCU Capacitors](/images/uploads/2020/05/pcb-mcu-capacitors-updated.png){: .align-center style="width: 85%"}
 
 As said earlier, this is a tentative layout. When I'll start the routing, there are very good chances that I'll have to move things a little. Note also that I haven't placed the ISP header. I'll do that during routing, because the matrix might not be hooked exactly like we did above in the end, and I might reuse the `MISO`, `MOSI` or `SCK` pins for the matrix.
 
 The board now looks like this:
 
-![PCB laid out](/images/uploads/2020/05/pcb-all-laid-out.png){: .align-center style="width: 90%"}
+![PCB laid out](/images/uploads/2020/05/pcb-all-laid-out-updated.png){: .align-center style="width: 90%"}
 
 Notice that all components are now placed inside the switch footprints, thanks to the SMD components small size.
 
