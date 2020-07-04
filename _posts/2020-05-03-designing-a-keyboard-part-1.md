@@ -16,6 +16,7 @@ tags:
 ## Updates
 
 * The decoupling capacitor section has been corrected to add a missing capacitor. There are 5 VCC pins on the Atmega32U4 and I was missing one.
+* Thanks to Druz who discovered there was a mismatch between the reset button in the electronic schema and the footprint.
 
 ## The article collection
 
@@ -290,13 +291,22 @@ The ESD protection diode is just a standard diode (some recommend a Zener diode 
 
 The diode has no interest for ESD protection if we only allow to reset with a push button (our case), but it might be of interest if we allow an external signal to trigger the reset. However the keyboard ISP header is for use only in case of emergency and will be hidden and protected in the keyboard case so the risk of ESD is quite negligible. I think it can be safe to remove this diode from the design.
 
-Most open-source keyboard designs don't have this diode either, probably for the same reason. To be noted that most of the Atmega32U4-based arduino board out-there don't have the diode either. 
+Most open-source keyboard designs don't have this diode either, probably for the same reason. To be noted that most of the Atmega32U4-based arduino board out-there don't have the diode either.
 
-So, finally the reset circuit looks like this:
+For the real reset button I'm going to use a small SMD button like the [RS-187R05A2-DS MT RT](https://www.digikey.com/htmldatasheets/production/877745/0/0/1/rs-187r05-ds-mt-rt-drawing.html) or the [Alps SKQGAFE010](http://www.alps.com/prod/info/E/HTML/Tact/SurfaceMount/SKQG/SKQGAFE010.html).
 
-![Reset Circuit](/images/uploads/2020/05/reset-circuit.png){: .align-center style="width: 50%"}
+The schematic of those buttons shows that there are 4 pins, each pair of pins connected horizontally. There's no such symbol in Kicad yet. I could use a basic `SW_PUSH` with the alps footprint for instance and that would work fine. But I can also show you how to create your own symbol.
 
-Note that I used a `SW_Push_Dual` button and not a simple push button. Most of the SMD push buttons like the [RS-187R05A2-DS MT RT](https://www.digikey.com/htmldatasheets/production/877745/0/0/1/rs-187r05-ds-mt-rt-drawing.html) have 4 pins (pins on each side are connected together).
+Let's open the symbol editor from the Kicad main window. First I'll create the `local` library (which has already been added to Kicad earlier). Then in this library, I'm creating the `SW_SKQG` symbol like this:
+
+![SW_SKQG](/images/uploads/2020/05/local-sw-skqg-symbol.png){: .align-center style="width: 80%"}
+
+It's composed of a rectangle, 4 pins labelled 1 & 2 and a few polylines and circles: nothing very complicated. Make sure to keep using the 50 mil grid settings to place the various pins, otherwise it will be difficult to connect the symbol in the schematic.
+Once done, save the symbol, it is ready to be used in the schematic:
+
+So, finally my reset circuit looks like this:
+
+![Reset Circuit](/images/uploads/2020/05/reset-circuit-updated.png){: .align-center style="width: 50%"}
 
 ## The USB connector
 
@@ -350,7 +360,7 @@ Here's the modified schema with the PRTR5V0U2X connected to the data lines:
 
 If you followed the design so far, you should have the following schema:
 
-![The big picture](/images/uploads/2020/05/the-big-picture.png){: .align-center}
+![The big picture](/images/uploads/2020/05/the-big-picture-updated.png){: .align-center}
 
 ## What's cooking next
 

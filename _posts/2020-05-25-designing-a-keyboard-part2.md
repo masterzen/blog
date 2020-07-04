@@ -17,6 +17,7 @@ tags:
 
 * I fixed the passive components footprints to be 0805 instead of 1206, based on a previous design I made. Those are still easy to hand-solder, but leave more empty space around the MCU to route signals.
 * The MCU placement and matrix connection schema is now correct. I forgot that it will be under the PCB and thus everything is mirrored.
+* Thanks to Druz who discovered there was a mismatch between the reset button in the electronic schema and the footprint
 
 ## Preamble
 
@@ -207,7 +208,7 @@ Do the same for the other components, and assign (use the search function to fin
 | Capacitors | `Capacitor_SMD:C_0805_2012Metric_Pad1.15x1.40mm_HandSolder` | |
 | Resistors | `Resistor_SMD:R_0805_2012Metric_Pad1.15x1.40mm_HandSolder` | |
 | Atmega32U4 | `Package_QFP:TQFP-44_10x10mm_P0.8mm` | it should already be assigned, but just in case |
-| Reset push button | `random-keyboard-parts:SKQG-1155865` | |
+| Reset push button | `Button_Switch_SMD:SW_SPST_SKQG_WithStem` | |
 | PRTR5V0U2X | `random-keyboard-parts:SOT143B` | |
 | USB Type-C connector | `Type-C:HRO-TYPE-C-31-M-12-HandSoldering` | |
 | Crystal | `Crystal:Crystal_SMD_3225-4Pin_3.2x2.5mm_HandSoldering` | |
