@@ -33,7 +33,7 @@ The USB Type-C connector is on the back layer at the top of the board, the MCU i
 
 Inevitably some traces will intersect other traces. In such case it is possible to switch the trace to another layer by placing a [_via_](https://en.wikipedia.org/wiki/Via_(electronics)). A via is an electrical connection between two layers. The trace can then extend from one layer to another. Basically it is a hole that is metal plated to be able to conduct electricity. Note that there are different kinds of via, depending on if they cross the whole board or only some layers. In the case of two layers PCB, it will be through-hole vias.
 
-![All Vias types](images/uploads/2020/05/via-types.png){: .align-center style="width: 80%"}
+![All Vias types](/images/uploads/2020/05/via-types.png){: .align-center style="width: 80%"}
 
 With a pair of vias in series the trace can jump to the other side and come back to its original side.
 
@@ -73,30 +73,15 @@ Dragging the track with `d` until I eliminated the small horizontal trace:
 
 When all the columns are completed it looks like this:
 
-![All columns routed](/images/uploads/2020/05/pcb-route-all-cols.png){: .align-center style="width: 50%"}
+![All columns routed](/images/uploads/2020/05/pcb-route-all-cols.png){: .align-center style="width: 95%"}
 
-Notice that I haven't connected the columns to the MCU yet. Notice also that I failed attributing the matrix columns to MCU pads, as the left columns are connected to the right pads of the MCU. I'm going to fix this now
+Notice that I haven't connected the columns to the MCU yet.
 
-Using the _Show local ratsnest_ function we can highlight the columns nest:
+Using the _Show local ratsnest_ function we can highlight the columns nets, and verify that the connection plan in [part 2]() is correct.
 
-![MCU mess](/images/uploads/2020/05/pcb-route-mcu-mess.png){: .align-center style="width: 50%"}
+The idea was to have the columns on the extreme left or right be assigned the bottom part of the MCU (respectively left and right pads), and the center left columns (`col5`, `col6`) the left pads, the center columns `col7` a free top pad, and the center right columns `col8`, `col9` the right pads.
 
-Here's the battle plan to clear the mess:
-
-* move `col7` to pad `8`, since it's closer
-* move left `row0` and `row1`
-* move `col4` to `col0` to bottom pads `32` to `28`
-* move `col5` and `col6` to left pads `37` and `36`
-* move `col12` to `col14` to bottom pads `25` to `27`
-* move `col8` to `col11` to right pads `19` to `22`
-
-The global idea is to have the columns on the extreme left or right be assigned the bottom part of the MCU (respectively left and right pads), and the center left columns (`col5`, `col6`) the left pads, the center columns `col7` a free top pad, and the center right columns `col8`, `col9` the right pads.
-
-Here's the new schema:
-
-![MCU mess](/images/uploads/2020/05/mcu-schema-reassigned-pins.png){: .align-center style="width: 50%"}
-
-And after using _Tools_ &rarr; _Update PCB from schematic_, the MCU mess is a bit better:
+This gives this result:
 
 ![MCU much less mess](/images/uploads/2020/05/pcb-route-less-mess.png){: .align-center style="width: 50%"}
 
@@ -249,8 +234,74 @@ The first rule is that we have to make the `XTAL1` and `XTAL2` trace as short as
 
 The second rule is that we have to space other signals as much as possible to prevent the clock noise to be coupled to other traces (but also the reverse). To prevent as much as possible this effect, it is recommended to add a GND guard ring around the cristal traces.
 
-I've seen a few keyboard designs that use a ground pour on the top (or bottom or both) layer as the crystal GND. While I believe this will work for 16 MHz crystal oscillators, I don't recommend doing this, because both the crystal current and MCU return current will have high frequencies (remember a square signal is full of high frequencies harmonics). When those current move in the ground pour, this one becomes a patch antenna (which is the reverse of the idea of having a ground plane to limit EMI). Instead, the ground pour below the crystal should not be connected to the other potential ground pours and form an island connected only to the GND close to the MCU. We can also add on the crystal oscillator a layer a GND guard ring (this might not be necessary at 16 MHz, though).
+The main problem with crystal oscillators is the return current. Every electrical circuit is a loop, so the current that gets in the crystal, needs to go back to somewhere for the crystal oscillator to work. This return current is also a square signal containing high frequency harmonics. The problem is that the loop formed to return the current is a kind of antenna. If it is large, it will radiate a lot of EMI which we want to minimize (and also if it's an antenna it will be susceptible to external emission which we also want to minimize). I've seen design with a general ground and vias connected to the crystal GND: in such case this pour becomes a nice patch antenna. If we were to design this keyboard with a ground pour, the one under the crystal oscillator should be an island not connected to the rest of the ground pour to prevent radiating everywhere and to make sure the current return loop is as small as possible. In fact it's even better to add a ground pour guard ring on the same layer as the crystal (the loop formed in this case will be shorter than crossing the 1.6mm pcb).
 
 The 22pF load capacitors should be placed as close to the crystal as possible.
 
+Let's start by connecting the crystal oscillator to the MCU (both `XTAL1`, `XTAL2` and `GND`):
+
 ![Crystal](/images/uploads/2020/05/pcb-route-xtal.png){: .align-center style="width: 50%"}
+
+Then using the _Add Filled Zone_ tool (select the GND net), we're going to draw a rectangle around the crystal:
+
+![Crystal layer guard ring](/images/uploads/2020/05/pcb-route-xtal-gnd-guard1.png){: .align-center style="width: 50%"}
+
+![Crystal layer guard ring](/images/uploads/2020/05/pcb-route-xtal-gnd-guard2.png){: .align-center style="width: 50%"}
+
+If we want to add a copper ground island in the other layer (`F.Cu`), we can do this easily by right clicking one of the control point of the filled zone we just added and use _Zones_ &rarr; _Duplicated Zones onto layer_, then select `F.Cu`. This zone will not be connected to anything, so we have to add a few vias:
+
+![Crystal layer F.Cu zone](/images/uploads/2020/05/pcb-route-xtal-fcu-zone.png){: .align-center style="width: 50%"}
+
+This isn't complete, we should probably extend the underlying zone under the `XTAL1` and `XTAL2` MCU zone. First select the `F.Cu` layer, then right-click on the _Create Corner_ function to add a control point. Do it againg and extend the zone under the `GND`, `XTAL1` and `XTAL2` pads:
+
+![Crystal layer ground pour](/images/uploads/2020/05/pcb-route-xtal-extended-zone.png){: .align-center style="width: 50%"}
+
+### Routing the power rails
+
+The next thing to do is to power the active components. It's always best to route power and ground traces before the signal traces. The signal traces can be moved around, they are not critical and are narrower than power traces.
+
+Hopefully there's only one active component this keyboard the MCU (keyboards with leds, underglow, rotary encoder might have more than one active component). The power comes from the USB port delivered directly by the host.
+
+The first step is to wire the USB Type-C power traces (and also the `CC1` and `CC2`). There are several possibilities, depending on where we want the `+5V` and `GND` to come from (since there are 2 pads with those nets on the USB connector to support both orientations).
+
+![USB-C Power](/images/uploads/2020/05/pcb-route-usb-power.png){: .align-center style="width: 50%"}
+
+Notice that I haven't yet wired `GND`. Then I can route `+5V` down to the MCU. I deliberately spaced the trace from the `D+`/`D-` USB differential pair to prevent it to couple into the power trace (remember the 5W rule from earlier?)
+
+![USB-C Power Down](/images/uploads/2020/05/pcb-route-usb-5v-down.png){: .align-center style="width: 50%"}
+
+This power trace needs to deliver power to all the `VCC` pads of the MCU. The best way to do that is to use a grid system around the MCU on the other layer. Do not close the loop, that would be quite bad.
+
+![PCB MCU Power](/images/uploads/2020/05/pcb-route-mcu-power.png){: .align-center style="width: 50%"}
+
+At the same time I connected the `GND` pads together with a kind of badly shaped star. I'll replace it with a local ground pour, but if not, the star would have to be redesigned to have less acute angles. There's an interest in having a ground pour behind the MCU (on the same layer), it will help conduct the generated heat and serve as a poor's man radiator.
+
+Even though I'll use a ground pour on the front and back layer, it's better to materialize the GND trace to the MCU. If possible I'll come back and simplify the routing when those pour will be laid out. Meanwhile the PCB would still be functional:
+
+![USB-C GND Down](/images/uploads/2020/05/pcb-route-usb-gnd.png){: .align-center style="width: 50%"}
+
+Then route the `GND` trace close to the `+5V` one down to the MCU:
+
+![PCB MCU GND](/images/uploads/2020/05/pcb-route-mcu-gnd.png){: .align-center style="width: 50%"}
+
+Make sure to not create any `GND` loops.
+
+### Connect the matrix
+
+I'm going to connect the matrix. This will also allow to check if the projected connection scheme on the MCU will work or not.
+
+I'm used to start from the MCU and progress towart the matrix rows and columns. A good way to do that, is to start some kind of bus from the MCU pads going globally in the direction of the rows or columns to connect like this:
+
+![Routing matrix bus out of the MCU](/images/uploads/2020/05/pcb-route-mcu-matrix.png){: .align-center style="width: 50%"}
+
+While doing that, it appears that there is a small issue on the left part of the MCU. `row4` has been placed right between `row1` and `row3`:
+
+![row4 issue](/images/uploads/2020/05/pcb-route-mcu-row4-issue.png){: .align-center style="width: 50%"}
+
+Ideally, `row4` should be on the MCU pad 38 because it is to be connected directly at the bottom, while `row1` and the other rows have to be connected on the left or middle part of the PCB.
+
+Going back to the schema, it is easy to swap `row4` and `row1`:
+
+![MCU swap row4 and row1](/images/uploads/2020/05/mcu-row4-fix.png){: .align-center style="width: 50%"}
+
+Then use the 
