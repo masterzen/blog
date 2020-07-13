@@ -304,4 +304,219 @@ Going back to the schema, it is easy to swap `row4` and `row1`:
 
 ![MCU swap row4 and row1](/images/uploads/2020/05/mcu-row4-fix.png){: .align-center style="width: 50%"}
 
-Then use the 
+Routing again a bit more the left rows and columns, and it looks like it's not yet perfect. There's a conflict between `col5`, `col6` and `row4`:
+
+![conflict with `row4`](/images/uploads/2020/05/pcb-route-conflict-row4.png){: .align-center style="width: 50%"}
+
+It seems much more natural to have `row4` at the bottom on pad 36, then `col5` and `col6` (from the bottom to up), this prevents crossing those three tracks:
+
+![Less intersection around `row4`](/images/uploads/2020/05/pcb-route-conflict-row4.png){: .align-center style="width: 50%"}
+
+To connect the left columns (from `col1` to `col5`), the more appealing way to do that is to group the traces as a kind of bus that connects to a pad on the last column row. Since the columns are connected on the `F.Cu` layer, it makes sense to convert the `B.Cu` traces out of the MCU with vias:
+
+![Left columns out of the MCU](/images/uploads/2020/05/pcb-route-mcu-left-cols.png){: .align-center style="width: 50%"}
+
+If all the traces follows the same model, it can be visually appealing:
+
+![Left columns distributions](/images/uploads/2020/05/pcb-route-left-columns.png){: .align-center style="width: 50%"}
+
+Now let's hook the right columns (`col8` to `col14`). Once again the idea is to group the traces together, first on `B.Cu` then switch to `F.Cu` to be able to cross the `B.Cu` `row4`:
+
+![Right columns out of the MCU](/images/uploads/2020/05/pcb-route-mcu-right-cols.png){: .align-center style="width: 50%"}
+
+While doing that, make sure to not route the tracks too close to the border (or check the manufacturer clearance first). Then, keep going all the bus to their respective columns with the same kind of forms:
+
+![Left columns distributions](/images/uploads/2020/05/pcb-route-right-columns.png){: .align-center style="width: 50%"}
+
+And finally, the last part of the matrix to be connected are the remaining rows (from `row0` to `row3`, as `row4` is already connected). There are multiple solutions (in fact any column in-between would work). But once again, I'm afraid I'll have to rearrange the MCU pads:
+
+![MCU rows mess](/images/uploads/2020/05/pcb-mcu-route-rows-mess.png){: .align-center style="width: 50%"}
+
+There's `row3` at a very short distance from pad 1, so it makes sense to connect it there. I'm going to connect the rows from the left part and down between `row3` et `row4` as this will minimize the number of crossings:
+
+![Top left rows](/images/uploads/2020/05/pcb-route-topleft-rows.png){: .align-center style="width: 50%"}
+
+But then arriving to the MCU it's clearly not in the right order:
+
+images/uploads/2020/05/pcb-route-mcu-rows-mess2.png
+
+Let's rearrange the rows in top down order in the schematic:
+
+images/uploads/2020/05/mcu-reorder-rows.png
+
+And after updating the PCB from the schematic, I can finally connect the remaining rows:
+
+images/uploads/2020/05/pcb-route-mcu-rows-in-order.png
+
+### Last remaining bits
+
+I still need to connect the reset button and the ISP header. Once everything has been done, it's just a matter of finding the natural location (close to their assigned pads) and orientation (to minimize tracks crossings):
+
+images/uploads/2020/05/pcb-route-mcu-reset-isp.png
+
+I had to divert `col8` around the reset button and isp because it was too much in the way, but in the end it was possible to connect those components without too much vias.
+
+### Checking everything is right
+
+Before going any further, I need to check the routing is correct. It's easy to forget a connection or to cross two traces without noticing. Hopefully, Kicad has the _Design Rules Checker_ feature which allows to check all those mistakes, but also the manufacturer clearances.
+
+It can give the following errors:
+
+images/uploads/2020/05/pcb-route-unconnected-col5.png
+
+Thankfully this one is easy to fix.
+
+### Making the board a bit nicer
+
+Let's have a 3D look of the board to see how it looks:
+
+If you do that you'll notice that the following things:
+
+* switch pads are not appearing on the front face
+* the switch key name is not appearing anywhere
+* same for the ISP header
+
+I will have to edit the footprints to remove the soldermask on the top layer pads, but also display the switch value at least on the back.
+
+Open the footprint editor, locate the `Alps-1U` footprint and select the left pad:
+
+images/uploads/2020/05/footprint-edit-alps.png
+
+Edit the pad properties (`e` shortcut), and make sure that both `F.Mask` and `B.Mask` are checked:
+
+images/uploads/2020/05/footprint-alps-edit-pad.png
+
+Do the same for the second pad. Then place a new text near the top of the footprint enter `%V` in the `Text` entry box (that will reflect the component value, which happens for our switch to be the key name or symbol), chose the `B.SilkS` layer and check the `mirrored` checkbox:
+
+images/uploads/2020/05/footprint-bsilk-key-name.png
+
+If you also want the key name to be displayed on the front, add another text but chose the `F.SilkS` layer and unselect the `mirrored` checkbox.
+
+Save the footprint, then do the same for the other footprint sizes.
+
+Once done, the PCB needs to be updated. In the PCB editor, select the _Tools_ &rarr; _Update Footprints from Library_. In the dialog box, select all components with reference `K??`, check the three checkboxes so that all the text components will be updated and press _update_:
+
+images/uploads/2020/05/pcb-update-switch-footprints.png
+
+Check the 3D Viewer to see the rendered silkscreen on the front and back:
+
+images/uploads/2020/05/rendered-pcb-front.png
+images/uploads/2020/05/rendered-pcb-back.png
+
+Unfortunately, we did this on ai03 library so the modification can't be really committed, as its library was added as a git submodule. Hopefully, I did the modifications in a fork of ai03 library (sorry, only Alps, no MX), so instead of adding ai03 submodule, you can add mine: `git@github.com:masterzen/MX_Alps_Hybrid.git`. And if you followed this article from the beginning, you can update the submodule with mine (see the [How to change git submodule remote](https://stackoverflow.com/questions/913701/how-to-change-the-remote-repository-for-a-git-submodule)).
+
+But wouldn't it be a really PCB without at least a few silkscreen art?
+
+The idea is to draw a vectorial logo (for instance in Adobe Illustrator or Inkscape), then import it as a footprint in Kicad.
+
+Since this is an Alps based board, I thought it would be nice to have a mountain as the logo. Since I'm not a graphist, I downloaded a nice mountain wireframe in SVG from the Creative Commons Clipart website, loaded in Inkscape and added the keyboard name (I had to rework the SVG to fix a few issues from there to there). Since this will go in the `F.SilkS` layer, I named the Inkscape layer `F.SilkS`:
+
+images/uploads/2020/05/inkscape-logo.png
+
+If you want to add text, make sure to convert the text to paths (with the _Object to path_ inkscape function), otherwise it won't be imported.
+
+Save the file as _Inkscape SVG_. Kicad doesn't yet support import SVG files directly so we first have to convert the vector file to a format that Kicad can read. There are several possibilities:
+
+* save a DXF from Inkscape and import it in Kicad. This works fine, but then any filled zone will be lost, and you need to recreate them in Kicad which can be painful.
+* use a converter tool like [svg2mod](https://github.com/svg2mod/svg2mod) or [svg2shenzen](https://github.com/badgeek/svg2shenzhen).
+
+I tried both method, and I won't recommend the first one, so I'm going to show how to convert the SVG to a format Kicad can understand.
+
+I wasn't able to make the [svg2shenzen](https://github.com/badgeek/svg2shenzhen) Inkscape extension work correctly on my mac, so I resorted to using [svg2mod](https://github.com/svg2mod/svg2mod) which worked fine.
+
+First install this tool with `pip3 install git+https://github.com/svg2mod/svg2mod`. Then run it on the svg file:
+
+```
+% svg2mod -i logo.svg -o ../local.pretty/logo -f 0.85 --name logo
+Parsing SVG...
+No handler for element {http://www.w3.org/2000/svg}defs
+No handler for element {http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd}namedview
+No handler for element {http://www.w3.org/2000/svg}metadata
+transform: matrix [4.9686689, 0.0, 0.0, 5.4800484, -251.10361, -536.90405]
+transform: matrix [0.05325035, 0.0, 0.0, 0.0482812, 50.5374, 97.974326]
+transform: matrix [0.05325035, 0.0, 0.0, 0.0482812, 50.5374, 97.974326]
+transform: matrix [0.05325035, 0.0, 0.0, 0.0482812, 50.5374, 97.974326]
+transform: matrix [0.05325035, 0.0, 0.0, 0.0482812, 50.5374, 97.974326]
+transform: matrix [4.9451996, 0.0, 0.0, 6.2660263, 266.42682, -668.87041]
+Found SVG layer: F.SilkS
+Writing module file: ../local.pretty/logo.kicad_mod
+    Writing polygon with 5 points
+    Writing polygon with 7 points
+    Writing polygon with 22 points
+    Writing polygon with 161 points
+    Inlining 1 segments...
+      Found insertion point: 0, 6
+    Writing polygon with 22 points
+    Writing polygon with 21 points
+    Writing polygon with 28 points
+    Inlining 1 segments...
+      Found insertion point: 0, 0
+    Writing polygon with 84 points
+    Writing polygon with 31 points
+```
+
+This produces a Kicad footprint, which we can view in the footprint editor:
+
+images/uploads/2020/05/footprint-front-logo.png
+
+Note that I created it in the `local` library I used earlier.
+
+Then place this footprint (`o` shortcut) on the PCB:
+
+images/uploads/2020/05/pcb-front-logo.png
+
+Note that it isn't possible to resize a footprint. To be able to rezise it you need to regenerate the footprint and change the resizing factor in `svg2mod` (the `-f` argument in the command above).
+
+Let's also do a small back-side logo. With the exact same logo, I can apply a flip in Inkscape, rename the layer to `B.SilkS`, and finally save the SVG to another file. When converting the small logo to a Kicad footprint, I used a very small `-f` factor (0.15 exactly). I can again place it on the PCB:
+
+images/uploads/2020/05/pcb-small-back-logo.png
+
+Note that I've also added a small copyright and version number text on the `B.SilkS` layer.
+
+### The result
+
+Here's the result so far:
+
+images/uploads/2020/05/rendered-front-with-logo.png
+
+And the back:
+
+images/uploads/2020/05/rendered-back-with-logo.png
+
+### To ground fill or not
+
+I've seen a lot of 2-layers keyboard PCB design that use ground fills on both faces. I believe the attempt is here to reduce EMI. I tend to think it is a counter productive to have such ground fills (or pour). First those won't reduce EMI, only proper bypass/decoupling capacitors, conscious routing of high frequency trace (to minimize loops area), or using a ground grid scheme can help reduce EMI. Some will say that it helps for heat dissipation, or that they are forced to use ground fills for manufacturing reasons or that they paid for the copper, so better use all of it.
+
+Don't get me wrong, on a multilayer PCB, having uninterrupted ground planes is essential to reduce EMI. But on 2-layers PCB, it will be hard to have an uninterrupted ground (hence we talk about ground fill, not plane). Any slot in the ground fill that would interrupt a return current will just make an antenna. A ground fill might reduce cross-talks between traces, but it can also be an antenna if it's to thin and long. So if you want to add a ground fill, just take care of doing it properly.
+
+That's the reason we routed GND as a trace earlier, at least there's an uninterrupted return path for the current. We could stop the design here and produce the board as is, it would definitely work.
+
+Still for the exercise, I'm going to try to add a ground fill on both faces, but doing so correctly (or at least trying :).
+
+Let's see how we can add a ground pour. In kicad use the _Add Filled Zone_ tool and draw a large rectangle in the `B.Cu` layer around the whole PCB. To ease drawing, it's better to use a 20 mils grid settings:
+
+images/uploads/2020/05/pcb-route-ground-pour-start.png
+images/uploads/2020/05/pcb-ground-pour-keep-going.png
+images/uploads/2020/05/pcb-route-ground-pour-fcu-result.png
+
+This is far from being perfect, because it merged the crystal oscillator ground island we designed earlier. I have to add a keep out zone to disconnect the island. This can be done by right-clicking on the ground zone and choose _Zones_ &rarr; _Add a Zone Cutout_, then draw a rectangle around the crystal oscillator ground zone, spaced by 20 mil:
+
+images/uploads/2020/05/pcb-route-crystal-cutout.png
+
+Next, let's duplicate the same copper fill on the other side by going again in the zone contextual menu and choosing _Duplicate Zone onto layer_ and chose `GND` on `F.Cu`:
+
+images/uploads/2020/05/pcb-route-duplicate-pour-fcu.png
+
+Note that when creating a zone, make sure to select the _Pad connection_ _thermal relief_ option. A set of clearance parameter that works fine is 6 mils for the regular clearance, 10 mils of minimum width and 20 mils for both thermal clearances. The thermal clearance and pad connection are very important otherwise hand-soldering the pcb will be very difficult as the ground fill copper would dissipate the soldering iron heat and the solder might be difficult to flow. If the pcb is to be assembled at a factory then it wouldn't be an issue.
+
+Let's look what we can do to make the copper fill better. First we have to make sure the copper fills are properly grounded by stitching vias from there to there. This will reduce the plane capacitance, but that's not an issue since we have plenty of decoupling capacitors and reduce the potentiality of any part becomming an antenna. Place a few vias from there to there or use the Via Stitching kicad plugin to do that. Here's an example with the Via Stitching plugin with a grid of 32mm (no need to make a swiss cheese):
+
+images/uploads/2020/05/pcb-route-stitching-vias.png
+
+There are still some issues. If the return current goes into the `F.Cu` ground fill back to the USB connector, the path of least impedance would cross several horizontal traces. That's were we could have an EMI issue. 
+
+
+
+
+
+
