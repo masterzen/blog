@@ -49,11 +49,11 @@ But it is also possible to do the reverse:
 
 ![Routing columns on back](/images/uploads/2020/05/pcb-route-columns-back.png){: .align-center style="width: 50%"}
 
-I was forced to use vias to jump other the columns `col1`. I tried two possibilities, using vias only for the minimal jump or using vias on the pad. Notice how both seems inelegant. Putting a via on a pad is also [not a good idea](https://electronics.stackexchange.com/questions/39287/vias-directly-on-smd-pads) unless the manufacturer knows how to do plugged vias. This can be needed for some high-frequency circuits where the inductance needs to be reduced. This isn't the case of this very low speed keyboard, so I'll refrain abusing vias.
+I was forced to use vias to jump other the column `col1`, because the diodes are on the backside. I tried two possibilities, using vias only for the minimal jump or using vias on the pad. Notice how both seems inelegant. Putting a via on a pad is also [not a good idea](https://electronics.stackexchange.com/questions/39287/vias-directly-on-smd-pads) unless the manufacturer knows how to do plugged vias. This can be needed for some high-frequency circuits where the inductance needs to be reduced. This isn't the case of this very low speed keyboard, so I'll refrain abusing vias.
 
 ### Routing matrix columns
 
-Let's route the columns. Start from the top left switch (or any other switch), then activate trace routing by pressing the `x` shortcut. Make sure that the `F.Cu` layer is active. If it's not the case you can switch from one layer to another by pressing the `v` shortcut. Caution: if you press `v` while routing a track, a via will be created. To start routing, click on the `GRV` left pad, then move the mouse down toward the `TAB` switch left pad (follow the net yellow highlighted line):
+Let's route the columns. Start from the top left switch (or any other switch), then activate trace routing by pressing the `x` shortcut. Make sure that the `F.Cu` layer is active. If it's not the case you can switch from one layer to another by pressing the `v` shortcut. Caution: if you press `v` while routing a track, a via will be created. To start routing, click on the `GRV` left pad, then move the mouse down toward the `TAB` switch left pad (follow the net yellow highlighted line which shows where the net is connected):
 
 ![Routing first column](/images/uploads/2020/05/pcb-route-first-step.png){: .align-center style="width: 50%"}
 
@@ -63,7 +63,7 @@ Keep going until you reach the next pad, and then click to finish the trace. Not
 
 ![Routing 2nd step](/images/uploads/2020/05/pcb-route-second-step.png){: .align-center style="width: 50%"}
 
-Keep going until all columns have been routed. Sometimes the trace is not ideally autorouted by the automated routing system. In this case, the best is to select the segment and use the _Drag Track Keep Slope_ (shortcut `d`) to move the trace. For instance this trace pad connection could be made better :
+Keep going until all columns have been routed. Sometimes the trace is not ideally autorouted by the automated routing system. In this case, it is possible to fix the problem by selecting the segment and use the _Drag Track Keep Slope_ (shortcut `d`) to move the trace. For instance this trace pad connection could be made better :
 
 ![Not ideally oriented trace](/images/uploads/2020/05/pcb-route-bad-trace.png){: .align-center style="width: 50%"}
 
@@ -71,13 +71,13 @@ Dragging the track with `d` until I eliminated the small horizontal trace:
 
 ![better trace](/images/uploads/2020/05/pcb-route-better-trace.png){: .align-center style="width: 50%"}
 
-When all the columns are completed it looks like this:
+When all the columns are completed, the PCB looks like this:
 
-![All columns routed](/images/uploads/2020/05/pcb-route-all-cols.png){: .align-center style="width: 95%"}
+![All columns routed](/images/uploads/2020/05/pcb-route-all-cols.png){: .align-center}
 
-Notice that I haven't connected the columns to the MCU yet.
+Notice that I haven't connected the columns to the MCU yet, hence all the nets are directly linked to their assigned pads with those white lines.
 
-Using the _Show local ratsnest_ function we can highlight the columns nets, and verify that the connection plan in [part 2]() is correct.
+Using the _Show local ratsnest_ function we can highlight the columns nets, and verify that the connection scheme in [part 2](/2020/05/25/designing-a-keyboard-part2/) is correct.
 
 The idea was to have the columns on the extreme left or right be assigned the bottom part of the MCU (respectively left and right pads), and the center left columns (`col5`, `col6`) the left pads, the center columns `col7` a free top pad, and the center right columns `col8`, `col9` the right pads.
 
@@ -89,9 +89,9 @@ But before connecting the columns to the MCU, it's better to route the USB data-
 
 ### USB differential pair
 
-The `D+`/`D-` USB data lines form what is called a [differential pair](https://en.wikipedia.org/wiki/Differential_signaling). The idea is to send the signal on two wires instead of one. Traditionally a component uses `GND` as the reference for a signal in a single wire. This can be subject to EMI and noise. In a differential pair (and provided the impedance matches on both wire), the noise will affect both wire the same way. The MCU will compute the difference between the two signals to recover the correct value. While doing this, the noise will be cancelled (since it is the same on both lines). The differential pair is thus much more immune to EMI and noise than a single trace.
+The `D+`/`D-` USB data lines form what is called a [differential pair](https://en.wikipedia.org/wiki/Differential_signaling). The idea is to send a complement signal on two wires instead of the normal signal on one. Traditionally a component uses `GND` as the reference for a signal in a single wire. This can be subject to EMI and noise. In a differential pair (and provided the impedance matches on both wire), the noise will affect both wire the same way. Since the MCU computes the difference between the two signals to recover the correct value, the noise is removed (because it is the same on both lines). The differential pair is thus much more immune to EMI and noise than a single trace.
 
-Thus differential pairs needs to be routed with care. Both trace needs to obey some rules
+Thus differential pairs needs to be routed with care. Both trace needs to obey some important rules listed below.
 
 #### Respect symmetry
 
@@ -104,17 +104,17 @@ To conserve coupling it's best for the differential pair traces to keep their sy
 
 The noise cancelling advantage of a differential pair works only if both signals arrive at the same time at the endpoint. If the traces have different lengths, one of the signal will arrive a bit later than the other, negating the effect. There's a tolerance though, especially since this keyboard USB differential pair will run at the USB _Full Speed_ standard (12 Mbit/s). 
 
-It's possible to compute the time difference the signal in function of the length difference. With the _Full Speed_ standard a few centimeter difference will not incur a difference in arrival time, but this wouldn't be true with high-speed signals. It's best to keep the good practices of matching length all the time.
+It's possible to compute the time difference of the signals in function of the length difference. With the _Full Speed_ standard a few centimeters difference will not incur a difference in arrival time, but this wouldn't be true with high-speed signals. It's best to keep the good practice of matching length all the time.
 
 There's no function in Kicad to check trace length, hopefully I can use the [trace length plugin](https://github.com/easyw/RF-tools-KiCAD) to check both traces of the pair.
 
 #### Reduce distance between traces
 
-Obviously this will take less space on the PCB, which is good. But also the signal in a differential pair can induce a current in the ground plane below (if there's one), possibly creating a current loop generating noise. This is again less an issue with USB _Full Speed_ signals like the one this keyboard deals with.
+Obviously this will take less space on the PCB, which is good. But also the differential pair return current will flow in the ground plane below (if there's one), possibly creating a current loop generating noise, if both tracks are not coupled enough because of their relative distance. This is again less an issue with USB _Full Speed_ signals like the one this keyboard deals with (or with 2 layers boards without ground planes).
 
 #### Minimize number of vias
 
-Each via adds inductance to the trace. It is usually recommended to not route those differential pairs through vias. But if vias have to be used anyway, make sure to use the same number of vias for both traces of the pair. With USB _Full Speed_ signals, adding via would probably not be detrimental, but it's better to keep those traces on the same layer as much as we can as a good habit.
+Each via adds inductance to the trace. It is usually recommended to not route those differential pairs through vias. But if vias have to be used anyway, make sure to use the same number of vias for both traces of the pair. With USB _Full Speed_ signals, adding a few amount of via would probably not be detrimental, but it's better to keep those traces on the same layer as much as we can as a good habit. Make sure to place all the IC so that there's no need for differential pairs to change layers. That's also the reason differential pairs should be routed first.
 
 #### Spacing around differential pairs
 
@@ -126,7 +126,7 @@ Where the differential pair comes close to high speed signals (for instance cloc
 
 Spoiler alert: all circuits form a closed loop. The signal in a differential pair is a current that needs to flow back to it's source at some point. At higher frequencies, the return current will follow the lowest impedance path. This usually happens to be the closest reference plane (see below). If there's a void or a split in the reference plane, the return current will have a longer path leading to excess electro-magnetic emissions, delayed signal, etc.
 
-#### Don't route close crystals
+#### Don't route close to crystals
 
 The differential pairs should not be routed under or near a crystal oscillator or resonator.
 
@@ -136,13 +136,13 @@ When a single track or another differential pair crosses (on a different layer) 
 
 #### Do not use striplines
 
-A [stripline](https://en.wikipedia.org/wiki/Stripline) is an layer trace embedded in a dielectric medium itself sandwiched by two copper plane. On the reverse a microstrip is a trace at the surface (not embdded).It's best to route differential pairs as microstrips.
+A [stripline](https://en.wikipedia.org/wiki/Stripline) is a layer trace embedded in a dielectric medium itself sandwiched by two copper plane. On the reverse a microstrip is a trace at the surface (not embdded).It's best to route differential pairs as microstrips.
 
 ![Striplines vs Microstrip](https://miro.medium.com/max/600/0*i-RNq6OJI1Af7eoB.){: .align-center style="width: 50%"}
 
 #### Avoid Bends
 
-If possible, the differential pair should never do a straight U-turn. When bending maintain a 135º angle all the time.
+If possible, the differential pair should never do a straight U-turn. When bending, maintain a 135º angle all the time.
 
 #### Keep away from edges
 
@@ -152,9 +152,9 @@ The recommendation is to keep at least 90mils between the traces and the ground 
 
 The USB 2.0 standard requires the transmission lines (ie cables and connected PCB tracks) to have a differential impedance of 90 ohms (which translate to a single line impedance of 45 ohm) +- 10%. 
 
-Maintaining the impedance is capital to prevent high frequency signals to bounce. To perform controlled impedance routing, you need to compute the single trace width and spacing (there are calculator online or in Kicad, or with the free Saturn PCB calculator). 
+Maintaining the impedance is capital to prevent high frequency signals to bounce. To perform controlled impedance routing, you need to compute the single trace width and spacing (there are calculators online and even one in Kicad; the free Saturn PCB calculator is a good reference but works on Windows only). 
 
-It's relatively easy to control the impedance if there's a continuous ground plane not far below the tracks (so it's best to route those on 4+ layers PCB). But for a 2-layers PCB, assuming one of the layer is an uninterrupted ground plane, the trace size would have to be 38 mils spaced with 8 mils. This is because the height of the dielectric board is around 1.6 mm for a 2 layers board, whereas it is less than a 1 mm between two copper layers on the same side of the board.
+It's relatively easy to control the impedance if there's a continuous ground plane not far below the tracks (so it's best to route those on 4+ layers PCB). But for a 2-layers PCB, assuming one of the layer is an uninterrupted ground plane, the trace size would have to be 38 mils spaced with 8 mils to match the 90 ohms impedance. This is because the height of the dielectric board is around 1.6 mm for a 2 layers board, whereas it is less than a 1 mm between two copper layers on the same side of the board.
 
 Hopefully, if our traces are shorter than the signal wavelength there's no need to implement controlled impedance. With a tool like the Saturn PCB Calculator we can estimate the _USB Full Speed_ wavelength and thus our max trace length.
 
@@ -166,45 +166,39 @@ Stubs should be avoided as they may cause signal reflections. For USB, this is s
 
 #### Want to know more?
 
-Most of these recommendation were gleaned from [TI High-SpeedLayoutGuidelines](http://www.ti.com/lit/an/slla414/slla414.pdf?ts=1591205679084), [Silicon Labs USB Hardware Design Guide](https://www.silabs.com/documents/public/application-notes/AN0046.pdf), [Atmel AVR1017: XMEGA - USB Hardware Design Recommendations](http://ww1.microchip.com/downloads/en/AppNotes/doc8388.pdf), [Intel EMI Design Guidelines for USB Components](https://www.ti.com/sc/docs/apps/msp/intrface/usb/emitest.pdf). Refer to those documentation for more information.
+Most of these recommendation were gleaned from [TI High-SpeedLayoutGuidelines](http://www.ti.com/lit/an/slla414/slla414.pdf?ts=1591205679084), [Silicon Labs USB Hardware Design Guide](https://www.silabs.com/documents/public/application-notes/AN0046.pdf), [Atmel AVR1017: XMEGA - USB Hardware Design Recommendations](http://ww1.microchip.com/downloads/en/AppNotes/doc8388.pdf), [Intel EMI Design Guidelines for USB Components](https://www.ti.com/sc/docs/apps/msp/intrface/usb/emitest.pdf). I also recommend reading [Eric Bogatin - Signal and Power Integrity - Simplified](https://www.amazon.com/dp/013451341X) and [Henry W. Ott - Electromagnetic Compatibility Engineering](https://www.amazon.com/dp/0470189304). Refer to those documentation for more information.
 
 #### Routing
 
-Now let's apply this knowledge to this keyboard. First I need to prepare the USB connector data lines since there are 4 pads for the two datalines, they need to be connected together:
+Now let's apply this knowledge to this keyboard. First I need to prepare the USB connector data lines: since there are 4 pads for the two datalines (to support reversibility) they need to be connected together:
 
 ![USB datalines connector](/images/uploads/2020/05/pcb-route-prepare-usb-connector.png){: .align-center style="width: 50%"}
 
 Use the _Route_ &rarr; _Differential Pairs_ feature and start laying out the traces from the connector. Uh oh, an error pops-up:
 
-![Differential Pair error](/images/uploads/2020/05/pcb-dp-error.png){: .align-center style="width: 50%"}
+![Differential Pair error](/images/uploads/2020/05/pcb-dp-error.png){: .align-center style="width: 60%"}
 
-To be able to route a differential pair, Kicad requires its nets should obey a specific naming. Net names should end up in `P`/`N` or `+`/`-`, which is not the case here. The USB pads nets have no name, as they acquire their name only after the impedance matching resistors. To correct this, I just need to assign name to the wires in the schema editor:
+To be able to route a differential pair, Kicad requires its nets to obey a specific naming. Net names should end up in `P`/`N` or `+`/`-`, which is not the case here. The USB pads nets have no name, as they acquire their name only after the impedance matching resistors. To correct this, I just need to assign name to the wires in the schema editor:
 
-![Adding names](/images/uploads/2020/05/usb-c-dp-dn-names.png){: .align-center style="width: 50%"}
+![Adding names](/images/uploads/2020/05/usb-c-dp-dn-names.png){: .align-center style="width: 75%"}
 
 And finally using _Update PCB from schematics_, I can start routing the USB data-lines (using the _Route_ &rarr; _Differntial pair_ function):
 
 ![Routing the USB data-lines](/images/uploads/2020/05/pcb-route-usb-dp-goind-down.png){: .align-center style="width: 50%"}
 
-Uh oh, it looks like I made another mistake while placing the components in [part 2](), the PRTR5V0U2X is reversed:
-
-![Incorrect placement](/images/uploads/2020/05/pcb-route-dp-issue.png){: .align-center style="width: 50%"}
-
-I made the same error as for the MCU (those components are laid on the back but we see them through the top, so everything is mirrored). It's easy to correct this by rotating the PRTR5V0U2X and moving around the fuse.
-
 The next step is to connect the differential pair to the PRTR5V0U2X. Unfortunately Kicad is not very smart when connecting a differential pair to pads. It's better to stop drawing the differential pair, switch to single track routing mode and connect the pads to the differential pairs. Since it's important to minimize stubs, it's best to uncouple a bit the differential pair to connect it to pads, like this:
 
 ![PRTR5V0U2X connection](/images/uploads/2020/05/pcb-route-PRTR5V0U2X.png){: .align-center style="width: 50%"}
 
-Then, the differential pair can be routed to the pair of impedance matching resistors:
+Then, the differential pair can be routed to the pair of impedance matching resistors (which are located close to the MCU):
 
 ![USB D+/D-](/images/uploads/2020/05/pcb-route-dp-to-resistors.png){: .align-center style="width: 50%"}
 
-To connect the resitors to the MCU with a differential pairs, it's easier to start form the MCU by using the _Route_ &rarr; _Differential Pair_ function and connect it to the resistors:
+To connect the resistors to the MCU with a differential pair, it's easier to start from the MCU by using the _Route_ &rarr; _Differential Pair_ function and connect the MCU pads to the resistors pads:
 
 ![To the MCU](/images/uploads/2020/05/pcb-route-dp-to-mcu.png){: .align-center style="width: 50%"}
 
-Now, I can check both trace length with the _Measure Length of Selected Tracks_ plugins. To do that, select one trace of the pair, and use the `u` shortcut to select it fully. In the case of this keyboard, I got 70.05mm for the left traces and 69.90 mm for the right one. This is small enough to not try to optimize it.
+Now, I can check both trace lengths with the _Measure Length of Selected Tracks_ plugins. To do that, select one trace of the pair, and use the `u` shortcut to select it fully. In the case of this keyboard, I got 70.05mm for the left traces and 69.90 mm for the right one. This is small enough to not try to optimize it.
 
 The final routing of this differential pair looks like this:
 
@@ -228,13 +222,13 @@ Do that for all the switches, but do not connect the rows to the MCU, nor cross 
 
 ### Routing the crystal oscillator
 
-Routing the crystal oscillator is easy as there are few tracks and components. But the crystal generates a square signal at 16 MHz. A [square signal](https://en.wikipedia.org/wiki/Square_wave#Fourier_analysis) is the combination of a lot of powerful harmonics in the frequency domain. Those are an issue for EMC, so special care has to be applied for placement and routing of the clock circuits.
+Routing the crystal oscillator is easy as there are few tracks and components. The crystal generates a square wave signal at 16 MHz. A [square signal](https://en.wikipedia.org/wiki/Square_wave#Fourier_analysis) is the combination of a lot of powerful harmonics in the frequency domain. Those are an issue for EMC, so special care has to be applied for placement and routing of the clock circuits.
 
-The first rule is that we have to make the `XTAL1` and `XTAL2` trace as short as possible, which means the crystal has to be as close as possible to the MCU, this is in order to minimize parasitic capacitance and interference. For the same reason, avoid using vias in the crystal traces.
+The first rule is that we have to make the `XTAL1` and `XTAL2` trace as short as possible, which means the crystal has to be as close as possible to the MCU, this is in order to minimize parasitic capacitance and interferences. For the same reason, avoid using vias in the crystal traces.
 
-The second rule is that we have to space other signals as much as possible to prevent the clock noise to be coupled to other traces (but also the reverse). To prevent as much as possible this effect, it is recommended to add a GND guard ring around the cristal traces.
+The second rule is that we have to space other signals as much as possible to prevent the clock noise to be coupled to other traces (but also the reverse). To prevent as much as possible this effect, it is recommended to add a GND guard ring around the crystal traces.
 
-The main problem with crystal oscillators is the return current. Every electrical circuit is a loop, so the current that gets in the crystal, needs to go back to somewhere for the crystal oscillator to work. This return current is also a square signal containing high frequency harmonics. The problem is that the loop formed to return the current is a kind of antenna. If it is large, it will radiate a lot of EMI which we want to minimize (and also if it's an antenna it will be susceptible to external emission which we also want to minimize). I've seen design with a general ground and vias connected to the crystal GND: in such case this pour becomes a nice patch antenna. If we were to design this keyboard with a ground pour, the one under the crystal oscillator should be an island not connected to the rest of the ground pour to prevent radiating everywhere and to make sure the current return loop is as small as possible. In fact it's even better to add a ground pour guard ring on the same layer as the crystal (the loop formed in this case will be shorter than crossing the 1.6mm pcb).
+The main problem with crystal oscillators is the return current. Every electrical circuit form a loop, so the current that gets in the crystal, needs to go back to somewhere for the crystal oscillator to work. This return current is also a square signal containing high frequency harmonics. The problem is that the loop formed to return the current is a kind of antenna. If it is large, it will radiate a lot of EMI which we want to minimize (and also if it's an antenna it will be susceptible to external emission which we also want to minimize). I've seen design with a general ground and vias connected to the crystal GND: in such case this pour becomes a nice patch antenna. If we were to design this keyboard with a ground pour, the one under the crystal oscillator should be an island not connected to the rest of the ground pour to prevent radiating everywhere and to make sure the current return loop is as small as possible. In fact it's even better to add a ground pour guard ring on the same layer as the crystal (the loop formed in this case will be shorter than crossing the 1.6mm pcb).
 
 The 22pF load capacitors should be placed as close to the crystal as possible.
 
@@ -252,15 +246,15 @@ If we want to add a copper ground island in the other layer (`F.Cu`), we can do 
 
 ![Crystal layer F.Cu zone](/images/uploads/2020/05/pcb-route-xtal-fcu-zone.png){: .align-center style="width: 50%"}
 
-This isn't complete, we should probably extend the underlying zone under the `XTAL1` and `XTAL2` MCU zone. First select the `F.Cu` layer, then right-click on the _Create Corner_ function to add a control point. Do it againg and extend the zone under the `GND`, `XTAL1` and `XTAL2` pads:
+This isn't complete, we should probably extend the underlying zone under the `XTAL1` and `XTAL2` MCU zone. First select the `F.Cu` layer, then right-click on the _Create Corner_ function to add a control point. Do it again and extend the zone under the `GND`, `XTAL1` and `XTAL2` pads:
 
 ![Crystal layer ground pour](/images/uploads/2020/05/pcb-route-xtal-extended-zone.png){: .align-center style="width: 50%"}
 
 ### Routing the power rails
 
-The next thing to do is to power the active components. It's always best to route power and ground traces before the signal traces. The signal traces can be moved around, they are not critical and are narrower than power traces.
+The next thing to do is to power the active components. It's always best to route power and ground traces before the signal traces. Our signal traces can be moved around, they are not critical and are narrower than power traces.
 
-Hopefully there's only one active component this keyboard the MCU (keyboards with leds, underglow, rotary encoder might have more than one active component). The power comes from the USB port delivered directly by the host.
+Hopefully there's only one active component in this keyboard the MCU (keyboards with leds, underglow rgb, rotary encoder might have more than one active component). The power comes from the USB port delivered directly by the host.
 
 The first step is to wire the USB Type-C power traces (and also the `CC1` and `CC2`). There are several possibilities, depending on where we want the `+5V` and `GND` to come from (since there are 2 pads with those nets on the USB connector to support both orientations).
 
@@ -290,13 +284,13 @@ Make sure to not create any `GND` loops.
 
 I'm going to connect the matrix. This will also allow to check if the projected connection scheme on the MCU will work or not.
 
-I'm used to start from the MCU and progress towart the matrix rows and columns. A good way to do that, is to start some kind of bus from the MCU pads going globally in the direction of the rows or columns to connect like this:
+I'm used to start from the MCU and progress toward the matrix rows and columns. A good way to do that, is to start some kind of bus from the MCU pads going globally in the direction of the rows or columns to connect like this:
 
-![Routing matrix bus out of the MCU](/images/uploads/2020/05/pcb-route-mcu-matrix.png){: .align-center style="width: 50%"}
+![Routing matrix bus out of the MCU](/images/uploads/2020/05/pcb-route-mcu-matrix.png){: .align-center style="width: 70%"}
 
 While doing that, it appears that there is a small issue on the left part of the MCU. `row4` has been placed right between `row1` and `row3`:
 
-![row4 issue](/images/uploads/2020/05/pcb-route-mcu-row4-issue.png){: .align-center style="width: 50%"}
+![row4 issue](/images/uploads/2020/05/pcb-route-mcu-row4-issue.png){: .align-center style="width: 70%"}
 
 Ideally, `row4` should be on the MCU pad 38 because it is to be connected directly at the bottom, while `row1` and the other rows have to be connected on the left or middle part of the PCB.
 
@@ -306,27 +300,27 @@ Going back to the schema, it is easy to swap `row4` and `row1`:
 
 Routing again a bit more the left rows and columns, and it looks like it's not yet perfect. There's a conflict between `col5`, `col6` and `row4`:
 
-![conflict with `row4`](/images/uploads/2020/05/pcb-route-conflict-row4.png){: .align-center style="width: 50%"}
+![conflict with `row4`](/images/uploads/2020/05/pcb-route-conflict-row4.png){: .align-center style="width: 70%"}
 
 It seems much more natural to have `row4` at the bottom on pad 36, then `col5` and `col6` (from the bottom to up), this prevents crossing those three tracks:
 
-![Less intersection around `row4`](/images/uploads/2020/05/pcb-route-conflict-row4.png){: .align-center style="width: 50%"}
+![Less intersection around `row4`](/images/uploads/2020/05/pcb-route-better-row4.png){: .align-center style="width: 65%"}
 
 To connect the left columns (from `col1` to `col5`), the more appealing way to do that is to group the traces as a kind of bus that connects to a pad on the last column row. Since the columns are connected on the `F.Cu` layer, it makes sense to convert the `B.Cu` traces out of the MCU with vias:
 
-![Left columns out of the MCU](/images/uploads/2020/05/pcb-route-mcu-left-cols.png){: .align-center style="width: 50%"}
+![Left columns out of the MCU](/images/uploads/2020/05/pcb-route-mcu-left-cols.png){: .align-center style="width: 75%"}
 
 If all the traces follows the same model, it can be visually appealing:
 
-![Left columns distributions](/images/uploads/2020/05/pcb-route-left-columns.png){: .align-center style="width: 50%"}
+![Left columns distributions](/images/uploads/2020/05/pcb-route-left-columns.png){: .align-center style="width: 90%"}
 
 Now let's hook the right columns (`col8` to `col14`). Once again the idea is to group the traces together, first on `B.Cu` then switch to `F.Cu` to be able to cross the `B.Cu` `row4`:
 
-![Right columns out of the MCU](/images/uploads/2020/05/pcb-route-mcu-right-cols.png){: .align-center style="width: 50%"}
+![Right columns out of the MCU](/images/uploads/2020/05/pcb-route-mcu-right-cols.png){: .align-center style="width: 60%"}
 
-While doing that, make sure to not route the tracks too close to the border (or check the manufacturer clearance first). Then, keep going all the bus to their respective columns with the same kind of forms:
+While doing that, make sure to not route the tracks too close to the border (or check the manufacturer clearance first). Then, keep tracing all tracks to their respective columns with the same kind of layout:
 
-![Left columns distributions](/images/uploads/2020/05/pcb-route-right-columns.png){: .align-center style="width: 50%"}
+![Left columns distributions](/images/uploads/2020/05/pcb-route-right-columns.png){: .align-center style="width: 90%"}
 
 And finally, the last part of the matrix to be connected are the remaining rows (from `row0` to `row3`, as `row4` is already connected). There are multiple solutions (in fact any column in-between would work). But once again, I'm afraid I'll have to rearrange the MCU pads:
 
@@ -338,23 +332,23 @@ There's `row3` at a very short distance from pad 1, so it makes sense to connect
 
 But then arriving to the MCU it's clearly not in the right order:
 
-images/uploads/2020/05/pcb-route-mcu-rows-mess2.png
+![MCU rows mess](/images/uploads/2020/05/pcb-route-mcu-rows-mess2.png){: .align-center style="width: 90%"}
 
 Let's rearrange the rows in top down order in the schematic:
 
-images/uploads/2020/05/mcu-reorder-rows.png
+![MCU rows rearrangement](/images/uploads/2020/05/mcu-reorder-rows.png){: .align-center style="width: 50%"}
 
 And after updating the PCB from the schematic, I can finally connect the remaining rows:
 
-images/uploads/2020/05/pcb-route-mcu-rows-in-order.png
+![Connecting rows correctly](/images/uploads/2020/05/pcb-route-mcu-rows-in-order.png){: .align-center style="width: 50%"}
 
 ### Last remaining bits
 
 I still need to connect the reset button and the ISP header. Once everything has been done, it's just a matter of finding the natural location (close to their assigned pads) and orientation (to minimize tracks crossings):
 
-images/uploads/2020/05/pcb-route-mcu-reset-isp.png
+![Reset button & ISP](/images/uploads/2020/05/pcb-route-mcu-reset-isp.png){: .align-center style="width: 80%"}
 
-I had to divert `col8` around the reset button and isp because it was too much in the way, but in the end it was possible to connect those components without too much vias.
+I had to divert `col8` around the reset button and ISP header because it was too much in the way, but in the end it was possible to connect those components without too many vias.
 
 ### Checking everything is right
 
@@ -362,33 +356,31 @@ Before going any further, I need to check the routing is correct. It's easy to f
 
 It can give the following errors:
 
-images/uploads/2020/05/pcb-route-unconnected-col5.png
+![Unconnected route error](/images/uploads/2020/05/pcb-route-unconnected-col5.png){: .align-center style="width: 80%"}
 
 Thankfully this one is easy to fix.
 
 ### Making the board a bit nicer
 
-Let's have a 3D look of the board to see how it looks:
+When looking at the 3D rendering of the PCB, you can notice the following issues:
 
-If you do that you'll notice that the following things:
-
-* switch pads are not appearing on the front face
-* the switch key name is not appearing anywhere
+* switch pads are not appearing on the front face (it's just a matter of design preferences)
+* the switch key name is not appearing anywhere (it's nice to be able to know what key it is when soldering or troubleshooting)
 * same for the ISP header
 
-I will have to edit the footprints to remove the soldermask on the top layer pads, but also display the switch value at least on the back.
+Let's edit the footprints to remove the solder-mask on the top layer pads, but also display the switch value at least on the back.
 
 Open the footprint editor, locate the `Alps-1U` footprint and select the left pad:
 
-images/uploads/2020/05/footprint-edit-alps.png
+![Footprint Editor](/images/uploads/2020/05/footprint-edit-alps.png){: .align-center style="width: 85%"}
 
 Edit the pad properties (`e` shortcut), and make sure that both `F.Mask` and `B.Mask` are checked:
 
-images/uploads/2020/05/footprint-alps-edit-pad.png
+![Pad properties](/images/uploads/2020/05/footprint-alps-edit-pad.png){: .align-center style="width: 80%"}
 
 Do the same for the second pad. Then place a new text near the top of the footprint enter `%V` in the `Text` entry box (that will reflect the component value, which happens for our switch to be the key name or symbol), chose the `B.SilkS` layer and check the `mirrored` checkbox:
 
-images/uploads/2020/05/footprint-bsilk-key-name.png
+![Adding key name](/images/uploads/2020/05/footprint-bsilk-key-name.png){: .align-center style="width: 80%"}
 
 If you also want the key name to be displayed on the front, add another text but chose the `F.SilkS` layer and unselect the `mirrored` checkbox.
 
@@ -396,31 +388,31 @@ Save the footprint, then do the same for the other footprint sizes.
 
 Once done, the PCB needs to be updated. In the PCB editor, select the _Tools_ &rarr; _Update Footprints from Library_. In the dialog box, select all components with reference `K??`, check the three checkboxes so that all the text components will be updated and press _update_:
 
-images/uploads/2020/05/pcb-update-switch-footprints.png
+![Updating PCB footprints](/images/uploads/2020/05/pcb-update-switch-footprints.png){: .align-center style="width: 70%"}
 
 Check the 3D Viewer to see the rendered silkscreen on the front and back:
 
-images/uploads/2020/05/rendered-pcb-front.png
-images/uploads/2020/05/rendered-pcb-back.png
+![Front PCB render](/images/uploads/2020/05/rendered-pcb-front.png){: .align-center style="width: 70%"}
+![Back PCB render](/images/uploads/2020/05/rendered-pcb-back.png){: .align-center style="width: 70%"}
 
-Unfortunately, we did this on ai03 library so the modification can't be really committed, as its library was added as a git submodule. Hopefully, I did the modifications in a fork of ai03 library (sorry, only Alps, no MX), so instead of adding ai03 submodule, you can add mine: `git@github.com:masterzen/MX_Alps_Hybrid.git`. And if you followed this article from the beginning, you can update the submodule with mine (see the [How to change git submodule remote](https://stackoverflow.com/questions/913701/how-to-change-the-remote-repository-for-a-git-submodule)).
+Unfortunately, we did this in the ai03 library so the modification can't be committed to our PCB repository, because this library was added as a git submodule. Hopefully, I did the modifications in a fork of ai03 library (sorry, only Alps, no MX), so instead of adding ai03 submodule, you can add mine: `git@github.com:masterzen/MX_Alps_Hybrid.git`. And if you followed this article from the beginning, you can update the submodule with mine (see the [How to change git submodule remote](https://stackoverflow.com/questions/913701/how-to-change-the-remote-repository-for-a-git-submodule)).
 
-But wouldn't it be a really PCB without at least a few silkscreen art?
+But wouldn't it be a really cool PCB without at least a few silkscreen art?
 
 The idea is to draw a vectorial logo (for instance in Adobe Illustrator or Inkscape), then import it as a footprint in Kicad.
 
-Since this is an Alps based board, I thought it would be nice to have a mountain as the logo. Since I'm not a graphist, I downloaded a nice mountain wireframe in SVG from the Creative Commons Clipart website, loaded in Inkscape and added the keyboard name (I had to rework the SVG to fix a few issues from there to there). Since this will go in the `F.SilkS` layer, I named the Inkscape layer `F.SilkS`:
+Since this is an Alps based board, I thought it would be nice to have a mountain silhouette as the logo. Since I'm not a graphist, I downloaded a nice mountain wireframe in SVG from the Creative Commons Clipart website, loaded it in Inkscape and added the keyboard name (I had to rework the SVG to fix a few issues from there to there). Since this will go in the `F.SilkS` layer, I named the Inkscape layer `F.SilkS`:
 
-images/uploads/2020/05/inkscape-logo.png
+![AEK67 logo](/images/uploads/2020/05/inkscape-logo.png){: .align-center style="width: 80%"}
 
 If you want to add text, make sure to convert the text to paths (with the _Object to path_ inkscape function), otherwise it won't be imported.
 
-Save the file as _Inkscape SVG_. Kicad doesn't yet support import SVG files directly so we first have to convert the vector file to a format that Kicad can read. There are several possibilities:
+Save the file into the format _Inkscape SVG_. Kicad doesn't yet support importing SVG files directly so we first have to convert the vector file to a format that Kicad can read. There are several possibilities:
 
-* save a DXF from Inkscape and import it in Kicad. This works fine, but then any filled zone will be lost, and you need to recreate them in Kicad which can be painful.
+* save a DXF from Inkscape and import it in Kicad. This works fine, but then any filled zone will be lost, and you need to recreate them in Kicad.
 * use a converter tool like [svg2mod](https://github.com/svg2mod/svg2mod) or [svg2shenzen](https://github.com/badgeek/svg2shenzhen).
 
-I tried both method, and I won't recommend the first one, so I'm going to show how to convert the SVG to a format Kicad can understand.
+I tried both method, and I won't recommend the first one, because it is really painful to recreate all the zones in Kicad. Instead I'm going to show how to convert the SVG to a format Kicad can understand.
 
 I wasn't able to make the [svg2shenzen](https://github.com/badgeek/svg2shenzhen) Inkscape extension work correctly on my mac, so I resorted to using [svg2mod](https://github.com/svg2mod/svg2mod) which worked fine.
 
@@ -457,66 +449,137 @@ Writing module file: ../local.pretty/logo.kicad_mod
 
 This produces a Kicad footprint, which we can view in the footprint editor:
 
-images/uploads/2020/05/footprint-front-logo.png
+![Logo as a footprint](/images/uploads/2020/05/footprint-front-logo.png){: .align-center style="width: 80%"}
 
-Note that I created it in the `local` library I used earlier.
+Note that I created it in the `local` library I used earlier to be able to commit it in my repository.
 
-Then place this footprint (`o` shortcut) on the PCB:
+Next, place this footprint (`o` shortcut) on the PCB:
 
-images/uploads/2020/05/pcb-front-logo.png
+![Placing the logo footprint](/images/uploads/2020/05/pcb-front-logo.png){: .align-center style="width: 80%"}
 
-Note that it isn't possible to resize a footprint. To be able to rezise it you need to regenerate the footprint and change the resizing factor in `svg2mod` (the `-f` argument in the command above).
+Unfortunately it isn't possible to resize a footprint. The only way to resize such footprint is to regenerate it with a different resizing factor in `svg2mod` (the `-f` argument in the command above). This requires a few trials before finding the correct factor.
 
-Let's also do a small back-side logo. With the exact same logo, I can apply a flip in Inkscape, rename the layer to `B.SilkS`, and finally save the SVG to another file. When converting the small logo to a Kicad footprint, I used a very small `-f` factor (0.15 exactly). I can again place it on the PCB:
+Let's also do a small back-side logo. With the exact same logo, it is possible to flip it in Inkscape, rename the layer to `B.SilkS`, and finally save the SVG to another file. When converting the small logo to a Kicad footprint, make sure to use a very small `-f` factor (0.15 exactly). I can then place it on the PCB:
 
-images/uploads/2020/05/pcb-small-back-logo.png
+![Backside small logo](/images/uploads/2020/05/pcb-small-back-logo.png){: .align-center style="width: 80%"}
 
-Note that I've also added a small copyright and version number text on the `B.SilkS` layer.
+Finally I've also added a small copyright and version number text on the `B.SilkS` layer.
 
 ### The result
 
 Here's the result so far:
 
-images/uploads/2020/05/rendered-front-with-logo.png
+![Rendered front PCB with logo](/images/uploads/2020/05/rendered-front-with-logo.png){: .align-center style="width: 80%"}
 
 And the back:
 
-images/uploads/2020/05/rendered-back-with-logo.png
+![Rendered back PCB with logo](/images/uploads/2020/05/rendered-back-with-logo.png){: .align-center style="width: 80%"}
 
 ### To ground fill or not
 
-I've seen a lot of 2-layers keyboard PCB design that use ground fills on both faces. I believe the attempt is here to reduce EMI. I tend to think it is a counter productive to have such ground fills (or pour). First those won't reduce EMI, only proper bypass/decoupling capacitors, conscious routing of high frequency trace (to minimize loops area), or using a ground grid scheme can help reduce EMI. Some will say that it helps for heat dissipation, or that they are forced to use ground fills for manufacturing reasons or that they paid for the copper, so better use all of it.
+I've seen a lot of 2-layers keyboard PCB design that use ground fills on both faces. I believe the attempt here is to reduce EMI. I tend to think it might be counter productive to have such ground fills (or pour). First those won't reduce EMI, only proper bypass/decoupling capacitors, conscious routing of high frequency trace (to minimize loops area), or using a ground grid scheme can help reduce EMI on 2 layers board. Some will say that it helps for heat dissipation, or that they are forced to use ground fills for manufacturing reasons or that they paid for the copper, so better use all of it. Those might be valid reasons, but for such project a ground fill might really be overkill.
 
-Don't get me wrong, on a multilayer PCB, having uninterrupted ground planes is essential to reduce EMI. But on 2-layers PCB, it will be hard to have an uninterrupted ground (hence we talk about ground fill, not plane). Any slot in the ground fill that would interrupt a return current will just make an antenna. A ground fill might reduce cross-talks between traces, but it can also be an antenna if it's to thin and long. So if you want to add a ground fill, just take care of doing it properly.
+Don't get me wrong, on a multilayer PCB, having uninterrupted ground planes is essential to reduce EMI. But on 2-layers PCB, it will be hard to have an uninterrupted ground (hence we talk about ground fill, not plane). Any slot in the ground fill that would interrupt a return current will just become an antenna. A ground fill might reduce cross-talks between traces, but it might also act as an antenna if it's too thin and long. So if you want to add a ground fill, just make sure you take this into account.
 
 That's the reason we routed GND as a trace earlier, at least there's an uninterrupted return path for the current. We could stop the design here and produce the board as is, it would definitely work.
 
-Still for the exercise, I'm going to try to add a ground fill on both faces, but doing so correctly (or at least trying :).
+Still for the exercise, I'm going to try to add a ground fill on both faces, but doing so correctly (or at least trying :)
 
 Let's see how we can add a ground pour. In kicad use the _Add Filled Zone_ tool and draw a large rectangle in the `B.Cu` layer around the whole PCB. To ease drawing, it's better to use a 20 mils grid settings:
 
-images/uploads/2020/05/pcb-route-ground-pour-start.png
-images/uploads/2020/05/pcb-ground-pour-keep-going.png
-images/uploads/2020/05/pcb-route-ground-pour-fcu-result.png
+![Ground pour start](/images/uploads/2020/05/pcb-route-ground-pour-start.png){: .align-center style="width: 60%"}
+
+Keep going around the board:
+![Ground pour](/images/uploads/2020/05/pcb-ground-pour-keep-going.png){: .align-center style="width: 90%"}
+
+And connect back to the starting point. This gives this:
+![Ground pour result](/images/uploads/2020/05/pcb-route-ground-pour-fcu-result.png){: .align-center style="width: 90%"}
 
 This is far from being perfect, because it merged the crystal oscillator ground island we designed earlier. I have to add a keep out zone to disconnect the island. This can be done by right-clicking on the ground zone and choose _Zones_ &rarr; _Add a Zone Cutout_, then draw a rectangle around the crystal oscillator ground zone, spaced by 20 mil:
 
-images/uploads/2020/05/pcb-route-crystal-cutout.png
+![Routing crystal cutout](/images/uploads/2020/05/pcb-route-crystal-cutout.png){: .align-center style="width: 80%"}
 
 Next, let's duplicate the same copper fill on the other side by going again in the zone contextual menu and choosing _Duplicate Zone onto layer_ and chose `GND` on `F.Cu`:
 
-images/uploads/2020/05/pcb-route-duplicate-pour-fcu.png
+![Front ground pour](/images/uploads/2020/05/pcb-route-duplicate-pour-fcu.png){: .align-center style="width: 90%"}
 
-Note that when creating a zone, make sure to select the _Pad connection_ _thermal relief_ option. A set of clearance parameter that works fine is 6 mils for the regular clearance, 10 mils of minimum width and 20 mils for both thermal clearances. The thermal clearance and pad connection are very important otherwise hand-soldering the pcb will be very difficult as the ground fill copper would dissipate the soldering iron heat and the solder might be difficult to flow. If the pcb is to be assembled at a factory then it wouldn't be an issue.
+Note that when creating a zone, make sure to select the _Pad connection_ _thermal relief_ option. A set of clearance parameter that works fine is 6 mils for the regular clearance, 10 mils of minimum width and 20 mils for both thermal clearances. The thermal clearance and pad connection are very important settings, otherwise hand-soldering the PCB might be difficult as the ground fill copper would dissipate the soldering iron heat and the solder wouldn't flow correctly. If the PCB is to be assembled at a factory then it wouldn't be an issue.
 
-Let's look what we can do to make the copper fill better. First we have to make sure the copper fills are properly grounded by stitching vias from there to there. This will reduce the plane capacitance, but that's not an issue since we have plenty of decoupling capacitors and reduce the potentiality of any part becomming an antenna. Place a few vias from there to there or use the Via Stitching kicad plugin to do that. Here's an example with the Via Stitching plugin with a grid of 32mm (no need to make a swiss cheese):
+Let's look what we can do to make the copper fill better. First we have to make sure the copper fills are properly grounded by stitching vias from there to there. This will reduce the plane capacitance, but that's not an issue since we have plenty of decoupling capacitors around the MCU. The idea is to reduce the potentiality of any part becoming an antenna. Place a few vias from there to there or use the Via Stitching kicad plugin to do that. Here's an example with the Via Stitching plugin with a grid of 32mm (no need to make a swiss cheese):
 
-images/uploads/2020/05/pcb-route-stitching-vias.png
+![Stitching vias around](/images/uploads/2020/05/pcb-route-stitching-vias.png){: .align-center style="width: 80%"}
 
-There are still some issues. If the return current goes into the `F.Cu` ground fill back to the USB connector, the path of least impedance would cross several horizontal traces. That's were we could have an EMI issue. 
+It's not finished yet. If the return current of the D+/D- goes into the `F.Cu` ground fill back to the USB connector, the path of least impedance would cross several horizontal traces. This isn't good, the current loop will be large (there current will have to turn around the obstacles). The largest the current loop, the largest the EMI. To circumvent this issue, we can add a few pair of vias around those horizontal traces that split the `F.Cu` plane. To do that, work in _Do not Show Filled Zone_ mode and create small GND tracks and vias across the horizontal lines:
 
+![Via bridges around plane splits](/images/uploads/2020/05/pcb-route-vias-bridges.png){: .align-center style="width: 70%"}
 
+Going back to the visible _Filled Zone_ mode, this would look like this:
 
+![Via bridges and zones](/images/uploads/2020/05/pcb-route-via-bridges-with-planes.png){: .align-center style="width: 70%"}
 
+Next, I can do that around all the zone split around the differential pair:
 
+![Via bridges around plane splits](/images/uploads/2020/05/pcb-route-all-vias-bridges.png){: .align-center style="width: 80%"}
 
+### Revisiting the USB shield
+
+In the [part 1]() of this series of article, I proposed a simple USB schema where I connected the shield and ground.
+
+There are endless debates on the Internet about wether it's correct or not to do that. I did a lot of research, because implicitly I had the feeling that it could be wrong.
+
+The USB cable shield is there to prevent electro-magnetic outside noise from coupling with the USB data wires, but also to protect the outside world from noise that could be generated by the USB data wires. Additionally the USB port shield can be susceptible to electro-static discharge.
+
+What makes the matter complex is that the USB norm doesn't tell exactly what should be done. In fact, it depends on a number of factors, among them: is it the host or device, is it bus powered, self powered, powered by mains, etc.
+
+If we focus on our case, I'm building a keyboard PCB (so from an USB standpoint a device powered through the bus), which I plan to enclose in a aluminium case.
+
+This PCB will be connected to a computer (or it won't work), and thus the device ground will be the same as the host ground and the cable shield will be connected to the host shield. On desktop computers the host shield is usually connected to earth ground. On laptops it really depends. Anyway, let's assume that the host shield is somehow correct.
+
+Connecting the USB GND to the USB port shield will have the drawback of possibly having a return current using the cable shield, preventing the shield to do its work (that is shield the USB data wire). It also would mean that potentially the keyboard case would be also connected to the USB GND, which wouldn't be great in case of an ESD, as a tension could then be seen on GND (the PRTR ESD protection device we use can protect VCC but not GND).
+
+Ideally the USB port shield should be connected to the metallic case (by using an EMI gasket or a direct connection or through metalized holes in the PCB). That's one of the reasons more and more custom keyboards are using the [Unified USB Daughterboard](). When the USB port shield is connected to the case, it first protects the PCB from EMI (and also helps preventing EMI coming from the PCB), but it also contains any ESD and direct them to the host.
+
+So, would the shield be disconnected from the USB GND? In fact, no that would be worst. In case of ESD, an electrical arc could form between the case and any close traces of the PCB (after the ESD protection device) risking damaging the components.
+
+After researching literature for a while (especially [Henry W. Ott's EMC book](https://www.wiley.com/en-us/Electromagnetic+Compatibility+Engineering-p-9780470189306)), I concluded that the safest plan would be to redesign the electric schema of the USB shield, and this part of the PCB. The aim is to create a dedicated I/O ground plane under the USB port shield that would be connected to the PCB GND through a single ferrite bead.
+
+A ferrite bead is a small common choke component. It acts as a lowpass filter. This will allow removing the noise that could be coupled in the shield before it reaches the USB GND or couples to the data lines. Unlike what is somewhat thought it can also help reduce ESD effect. ESD spectral density is roughly around 100-500 MHz, which is specifically filtered by ferrite beads (if you wonder why, it's because the ESD high righ time generates high frequency harmonics).
+
+I just added a new component a `Ferrite_Bead_Small` with an `Inductor_SMD:L_0805_2012Metric_Pad1.15x1.40mm_HandSolder` footprint:
+
+![Adding a ferrite bead](/images/uploads/2020/05/adding-ferrite-bead.png){: .align-center style="width: 90%"}
+
+Then after annotating the schema (without reannotating everything), and updating the PCB, I need to create the separated I/O ground plane. This can be done by first resizing the GND ground plane like this:
+
+![Resizing the GND planes](/images/uploads/2020/05/pcb-route-reduce-gnd-pour.png){: .align-center style="width: 80%"}
+
+I also placed the ferrite bead footprint across the seam between the I/O ground plane and the GND plane. Next, I can create the new I/O plane:
+
+![Creating the I/O plane](/images/uploads/2020/05/pcb-route-new-io-ground.png){: .align-center style="width: 80%"}
+
+To ease creating the seam, use a coarse grid like 10 mils. Finally duplicate the zone on the `F.Cu` layer:
+
+![Zone on both layers](/images/uploads/2020/05/pcb-route-io-dup-layers.png){: .align-center style="width: 70%"}
+
+And finally, we need to make sure both planes are connected together (they are through the USB receptacle shield) by adding a few vias:
+
+![Stitching vias](/images/uploads/2020/05/pcb-route-io-ground-with-vias.png){: .align-center style="width: 70%"}
+
+I also made the I/O zone symmetrical. 
+
+## How does it look?
+
+Here's the final PCB render:
+
+![AEK67 PCB 3D View](/images/uploads/2020/05/pcb-aek67-3d-finished.jpg){: .align-center style="width: 95%"}
+
+## What's cooking next
+
+That's all for today. In the next episode I'll cover:
+
+* manufacturing the PCB
+* choosing the right components
+* soldering them
+* producing the firmware
+
+Thanks for following!
