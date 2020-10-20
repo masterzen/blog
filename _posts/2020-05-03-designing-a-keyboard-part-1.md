@@ -24,6 +24,7 @@ This collection now contains the following articles:
 
 1. [Part 1 (this one) - the electronic schema](/2020/05/03/designing-a-keyboard-part-1/)
 2. [Part 2 - matrix & first steps of PCB layout](/2020/05/25/designing-a-keyboard-part2/)
+3. [Part 3 - routing the PCB](/2020/10/20/designing-a-keyboard-part3/)
 
 ## Preamble
 
@@ -364,7 +365,7 @@ If you followed the design so far, you should have the following schema:
 
 ## What's cooking next
 
-We're far from having a working PCB. I hope to be able to cover the following topics in the next episode:
+We're far from having a working PCB. I'm going to cover the following topics in the [next episode](/2020/05/25/designing-a-keyboard-part2/):
 
 * design the matrix
 * reference the components
@@ -372,3 +373,5 @@ We're far from having a working PCB. I hope to be able to cover the following to
 * starts laying out the PCB
 
 Then on the subsequent parts, I'll cover soldering SMD components, configuring the firmware, testing the PCB, and designing the case.
+
+Want to read the next part? Then [click here for the Designing a Keyboard part 2](/2020/05/25/designing-a-keyboard-part2/)

@@ -442,7 +442,7 @@ Save the footprint, and finally the board can be rendered with all the component
 
 ## What's cooking next
 
-That's all for today. We're still far from having a working PCB, and in the next episode I'll cover:
+That's all for today. We're still far from having a working PCB, and in the [next episode](/2020/10/20/designing-a-keyboard-part3/) I'll cover:
 
 * routing the traces
 * power ground pour
@@ -450,3 +450,5 @@ That's all for today. We're still far from having a working PCB, and in the next
 * manufacturing the PCB
 
 Thanks for following!
+
+Want to read the next part? Then [click here for the Designing a Keyboard part 3](/2020/10/20/designing-a-keyboard-part3/)
