@@ -13,14 +13,14 @@ tags:
 - "mechanical keyboards"
 ---
 
-Welcome for the third episode of this series of posts about designing a full fledged keyboard from scratch. The [first episode](/2020/05/03/designing-a-keyboard-part-1/) focused on the electronic schema of the keyboard controller, the [second one](/2020/05/03/designing-a-keyboard-part-2/) was on the components' layout. In this one I'll cover:
+Welcome for the third episode of this series of posts about designing a full fledged keyboard from scratch. The [first episode](/2020/05/03/designing-a-keyboard-part-1/) focused on the electronic schema of the keyboard controller, the [second one](/2020/05/25/designing-a-keyboard-part-2/) was on the components' layout. In this one I'll cover:
 
 * how to route the matrix
 * the MCU
 * the USB datalines
 * adding drawings on the soldermask
 
-This is a long episode that took me a quite long time to produce. Feel free to to leave a comment if you have any questions or find anything suspect :)
+This is a long episode that took me a quite long time to produce. Feel free to leave a comment if you have any questions or find anything suspect :)
 
 ## The Art of Routing
 
@@ -28,7 +28,7 @@ Routing is the process of connecting the various pins and pads of the circuits w
 
 In the previous episode I decided to use a two layers PCB (which is the best compromise between cost and ease of routing for such projects). The switches are placed on the front layer, and because they are through-hole components they are being soldered on the back. All the rest of the components are laid out on the back of the board.
 
-In the part 2 of this series of posts, I shown how to design the matrix schema. The matrix is a set of non-intersecting rows and columns. This means that if we were to route the matrix on the same PCB face we'd had an issue: all rows would collide with the columns.
+In the [part 2](/2020/05/25/designing-a-keyboard-part-2/) of this series of posts, I shown how to design the matrix schema. The matrix is a set of non-intersecting rows and columns. This means that if we were to route the matrix on the same PCB face we'd had an issue: all rows would collide with the columns.
 
 Hopefully, since there are two layers in this PCB, I can route the columns on one side and the rows on the other side. Unfortunately there are other components to connect: the USB Type-C connector (and its ESD protection circuits), the MCU, the reset push-button, etc.
 
