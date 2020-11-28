@@ -13,7 +13,7 @@ tags:
 - "mechanical keyboards"
 ---
 
-Welcome for the third episode of this series of posts about designing a full fledged keyboard from scratch. The [first episode](/2020/05/03/designing-a-keyboard-part-1/) focused on the electronic schema of the keyboard controller, the [second one](/2020/05/25/designing-a-keyboard-part-2/) was on the components' layout. In this one I'll cover:
+Welcome for the third episode of this series of posts about designing a full fledged keyboard from scratch. The [first episode](/2020/05/03/designing-a-keyboard-part-1/) focused on the electronic schema of the keyboard controller, the [second one](/2020/05/25/designing-a-keyboard-part2/) was on the components' layout. In this one I'll cover:
 
 * how to route the matrix
 * the MCU

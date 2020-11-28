@@ -182,7 +182,7 @@ Here's the exact size of those different components:
 
 <a class=".align-center" title="Zerodamage / CC BY (https://creativecommons.org/licenses/by/3.0)" href="https://commons.wikimedia.org/wiki/File:SMT_sizes,_based_on_original_by_Zureks.svg"><img width="256" alt="SMT sizes, based on original by Zureks" src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/34/SMT_sizes%2C_based_on_original_by_Zureks.svg/256px-SMT_sizes%2C_based_on_original_by_Zureks.svg.png"></a>
 
-For this PCB, I'm going to choose the 0805 (and not 1206 as I originally wrote) size so that it's still easy to solder the components but allows routing traces around the MCU. Other components have different packages of different size too. For instances, diodes exists in `SOD323`, `SOD123`, `MiniMelf` packages etc. `SOD323` packages are much easier to solder than `MiniMELF` packages, because MELF components are cylindrical (and they tend to roll or misalign easily).
+For this PCB, I'm going to choose the 0805 (and not 1206 as I originally wrote) size so that it's still easy to solder the components but allows routing traces around the MCU. Other components have different packages of different size too. For instances, diodes exists in `SOD323`, `SOD123`, `MiniMelf` packages etc. `SOD123` packages are much easier to solder than `MiniMELF` packages, because MELF components are cylindrical (and they tend to roll or misalign easily).
 
 Let's assign footprints to the components now. Go to the _Tools_ menu and choose _Assign footprints_:
 
@@ -201,7 +201,7 @@ Do the same for the other components, and assign (use the search function to fin
 
 | Component | Footprint | Comment |
 |-----------|-----------|---------|
-| Diodes | `Diode_SMD:D_SOD-323_HandSoldering` | |
+| Diodes | `Diode_SMD:D_SOD-123` | |
 | 500mA Fuse | `Fuse:Fuse_1206_3216Metric_Pad1.42x1.75mm_HandSolder` | |
 | ISP header | `random-keyboard-parts:Reset_Pretty-Mask` | |
 | `K??` switches | `Alps_Only:ALPS-1U` | we'll come back later to this |
