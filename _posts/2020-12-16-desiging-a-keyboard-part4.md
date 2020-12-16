@@ -3,17 +3,17 @@ layout: single
 classes: wide
 title: Designing a keyboard from scratch - Part 4
 header:
-  image: /images/uploads/2020/05/header-part3.jpg
+  image: "/images/uploads/2020/10/header-part4.jpg"
 category:
-- "mechanical keyboards"
+- mechanical keyboards
 - DIY
 tags:
 - design
 - PCB
 - electronics
-- "mechanical keyboards"
+- mechanical keyboards
+date: 2020-12-16 18:58 +0100
 ---
-
 Welcome to the 4th episode of this series of articles about designing a full keyboard from scratch. So far we've seen:
 
 * how to create the electronic schema of the keyboard controller in [the first episode](/2020/05/03/designing-a-keyboard-part-1/)
