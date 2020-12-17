@@ -79,7 +79,7 @@ And additionnally those options need to be checked:
 
 When clicking on the _Plot_ button, the files are generated (in the folder previously entered).
 
-The next step is to generate the drill files, which contain the location where to drill holes (mounting or for some components). This can be done by clicking on the _Generate Drill Files_ button next to the _Plot_ button in the previous window:
+The next step is to generate the drill files, which contain the location where to drill holes (for both types of holes: mounting holes or for through-hole components, and for plated and non-plated holes). This can be done by clicking on the _Generate Drill Files_ button next to the _Plot_ button in the previous window:
 
 [![Plot Gerber](/images/uploads/2020/10/kicad-plot-drill-files.png){: .align-center style="width: 85%"}](/images/uploads/2020/10/kicad-plot-drill-files.png)
 
@@ -530,7 +530,7 @@ Of course getting a binocular or a microscope would be awesomely useful, but tho
 
 The magnifying lens of such lamp is expressed in diopters. You can compute the magnifying ratio with the `D/4+1` formula. A 5d lens will provide a 2.25x magnification. This is enough to solder small parts, but my experience (and bad eyes) show that when there's a small defect its quite hard to have a good view of it (like when there's a small bridge on two close pins on high-pitched ICs).
 
-That's why I also recommend getting a standalone small jewelry 10x magnifying glass. The Japanese [Engineer SL-56](https://www.engineer.jp/en/products/sl55_57e.html) does an excellent work.
+That's why I also recommend getting a standalone small jewelry 10x magnifying glass. The Japanese [Engineer SL-56](https://www.engineertools-jp.com/sl12-5557) does an excellent work.
 
 ## Assembling the PCB
 
