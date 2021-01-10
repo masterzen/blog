@@ -13,20 +13,17 @@
 # you will see them accessed via {{ site.title }}, {{ site.email }}, and so on.
 # You can create any custom variable you would like, and they will be accessible
 # in the templates via {{ site.myvariable }}.
-url: http://www.masterzen.fr
+url: https://www.masterzen.fr
 title: Masterzen's Blog
 subtitle: Journey in a software world…
-author: Masterzen
-simple_search: http://google.com/search
+simple_search: https://google.com/search
 description:
 
 baseurl: "" # the subpath of your site, e.g. /blog
-url: "http://www.masterzen.fr" # the base hostname & protocol for your site, e.g. http://example.com
 twitter_username: _masterzen_
 github_username:  masterzen
 
 # Build settings
-markdown: kramdown
 theme: minimal-mistakes-jekyll
 plugins:
   - jekyll-feed
@@ -254,13 +251,16 @@ defaults:
       layout: single
       author_profile: true
 
+# analytics:
+#   provider: "google-gtag"
+#   google:
+#     tracking_id: "UA-6968171-1"
+#     anonymize_ip: true # default
+
 analytics:
-  provider: "google-gtag"
-  google:
-    tracking_id: "UA-6968171-1"
-    anonymize_ip: true # default
+  provider: "custom"
+
 
 search                   : true
 search_full_content      : true
 search_provider          : lunr
-
