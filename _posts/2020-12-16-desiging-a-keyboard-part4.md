@@ -17,8 +17,8 @@ date: 2020-12-16 18:58 +0100
 Welcome to the 4th episode of this series of articles about designing a full keyboard from scratch. So far we've seen:
 
 * how to create the electronic schema of the keyboard controller in [the first episode](/2020/05/03/designing-a-keyboard-part-1/)
-* how to design the matrix and layout components in [the second episode](/2020/05/25/designing-a-keyboard-part-2/)
-* how to route the PCB efficiently in [the third episode](/2020/10/20/designing-a-keyboard-part-3)
+* how to design the matrix and layout components in [the second episode](/2020/05/25/designing-a-keyboard-part2/)
+* how to route the PCB efficiently in [the third episode](/2020/10/20/designing-a-keyboard-part3)
 
 I'll now cover:
 

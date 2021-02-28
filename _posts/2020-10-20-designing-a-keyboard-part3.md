@@ -28,7 +28,7 @@ Routing is the process of connecting the various pins and pads of the circuits w
 
 In the previous episode I decided to use a two layers PCB (which is the best compromise between cost and ease of routing for such projects). The switches are placed on the front layer, and because they are through-hole components they are being soldered on the back. All the rest of the components are laid out on the back of the board.
 
-In the [part 2](/2020/05/25/designing-a-keyboard-part-2/) of this series of posts, I shown how to design the matrix schema. The matrix is a set of non-intersecting rows and columns. This means that if we were to route the matrix on the same PCB face we'd had an issue: all rows would collide with the columns.
+In the [part 2](/2020/05/25/designing-a-keyboard-part2/) of this series of posts, I shown how to design the matrix schema. The matrix is a set of non-intersecting rows and columns. This means that if we were to route the matrix on the same PCB face we'd had an issue: all rows would collide with the columns.
 
 Hopefully, since there are two layers in this PCB, I can route the columns on one side and the rows on the other side. Unfortunately there are other components to connect: the USB Type-C connector (and its ESD protection circuits), the MCU, the reset push-button, etc.
 
