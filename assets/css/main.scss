@@ -45,3 +45,13 @@ $base0f: #d33682 !default;
 
 @import "minimal-mistakes/skins/{{ site.minimal_mistakes_skin | default: 'default' }}"; // skin
 @import "minimal-mistakes"; // main partials
+
+.grid__item {
+
+
+  .archive__item-teaser {
+    @include breakpoint($medium) {
+      max-height: 150px;
+    }
+  }
+}

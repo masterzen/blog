@@ -8,5 +8,7 @@ main:
     url: /bio/
   - title: "Software Contributions"
     url: /software-contributions/
+  - title: "Keyboards"
+    url: /keyboard/
   - title: "Archive"
     url: /blog/archive/

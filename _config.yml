@@ -250,7 +250,14 @@ defaults:
     values:
       layout: single
       author_profile: true
-
+  # keyboard
+  - scope:
+      path: ""
+      type: keyboard
+    values:
+      layout: single
+      author_profile: false
+      share: false
 # analytics:
 #   provider: "google-gtag"
 #   google:
@@ -264,3 +271,9 @@ analytics:
 search                   : true
 search_full_content      : true
 search_provider          : lunr
+
+collections:
+  keyboard:
+    output: true
+    permalink: /:collection/:path/
+    sort_by: order
