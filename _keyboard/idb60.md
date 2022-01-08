@@ -15,7 +15,7 @@ sidebar:
   - title: "Keyboard"
     text: "IDB60 - silver - WKL 60%"
   - title: "Switches"
-    text: "Keebwerk Tacit"
+    text: "Koala 62g"
   - title: "Keyset"
     text: "ePBT 2048"
   - title: "Comment"
