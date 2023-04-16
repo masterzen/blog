@@ -17,7 +17,7 @@ gallery:
     url: https://photos.smugmug.com/Keyboards/i-LBB95Br/0/b717b5ad/X5/DSC_2941-NEF-X5.jpg
 sidebar:
   - title: "Keyboard"
-    text: "Matrix Falcon 6xv 2.0 - Linen - 60% HHKB"
+    text: "Matrix Falcon 6xv 2.0 - Gray coating - 60% HHKB"
   - title: "Switches"
     text: "Realforce 55g Topre domes & springs, Deskey sliders w/ silencing rings, Realforce housings"
   - title: "Keyset"
