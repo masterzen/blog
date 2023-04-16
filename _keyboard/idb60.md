@@ -23,5 +23,3 @@ sidebar:
 ---
 
 {% include gallery class="full" layout="half" %}
-
-
