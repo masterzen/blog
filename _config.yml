@@ -78,9 +78,6 @@ author:
     - label: "Website"
       icon: "fas fa-fw fa-link"
       url: "http://www.masterzen.fr"
-    - label: "@_masterzen_"
-      icon: "fab fa-fw fa-twitter-square"
-      url: "https://twitter.com/_masterzen_"
     - label: "github.com/masterzen"
       icon: "fab fa-fw fa-github"
       url: "https://github.com/masterzen"
@@ -91,9 +88,9 @@ author:
 # Site Footer
 footer:
   links:
-    - label: "Twitter"
-      icon: "fab fa-fw fa-twitter-square"
-      url: "https://twitter.com/_masterzen_"
+    - label: "Mastodon"
+      icon: "fab fa-brands fa-mastodon"
+      url: "https://hachyderm.io/@masterzen"
     - label: "GitHub"
       icon: "fab fa-fw fa-github"
       url: "https://github.com/masterzen"
